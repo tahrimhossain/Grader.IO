@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grader_io/Views/assignment_detail_view.dart';
 import 'package:grader_io/Views/created_classrooms_view.dart';
 import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
 import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
-import 'package:grader_io/Models/classroom.dart';
+import 'package:grader_io/Views/summary_of_submissions_view.dart';
+import 'package:grader_io/Views/teacher_assignment_info_scaffold.dart';
 import 'Controllers/auth_state_controller.dart';
-import 'Views/scaffold_with_bottom_nav_bar.dart';
+import 'Views/created_and_joined_classrooms_scaffold.dart';
 import 'Views/splash_screen.dart';
 
 void main() {
@@ -19,7 +21,8 @@ class MyApp extends ConsumerWidget {
   MyApp({super.key});
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  final _shellNavigatorKey = GlobalKey<NavigatorState>();
+  final _shellNavigatorKeyForJoinedAndCreatedClassrooms =
+      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,30 +50,24 @@ class MyApp extends ConsumerWidget {
           initialLocation: '/splash',
           refreshListenable: ref.watch(authStateController),
           routes: [
-            ShellRoute(
-                navigatorKey: _shellNavigatorKey,
-                builder:
-                    (BuildContext context, GoRouterState state, Widget child) {
-                  return ScaffoldWithBottomNavBar(child: child);
-                },
-                routes: <RouteBase>[
-                  GoRoute(
-                    parentNavigatorKey: _shellNavigatorKey,
-                    name: 'created_classrooms',
-                    path: '/created_classrooms',
-                    pageBuilder: (context, state) => const NoTransitionPage(
-                      child: CreatedClassroomsView(),
-                    ),
-                  ),
-                  GoRoute(
-                    parentNavigatorKey: _shellNavigatorKey,
-                    name: 'joined_classrooms',
-                    path: '/joined_classrooms',
-                    pageBuilder: (context, state) => const NoTransitionPage(
-                      child: JoinedClassroomsView(),
-                    ),
-                  ),
-                ]),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'created_classrooms',
+              path: '/created_classrooms',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CreatedAndJoinedClassroomsScaffold(child: CreatedClassroomsView()),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'joined_classrooms',
+              path: '/joined_classrooms',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CreatedAndJoinedClassroomsScaffold(child: JoinedClassroomsView()),
+              ),
+            ),
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               name: 'splash',
@@ -98,18 +95,42 @@ class MyApp extends ConsumerWidget {
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_assignments',
-              path: '/summary_of_assignments',
+              path: '/summary_of_assignments/:classroomName/:classroomCode',
               pageBuilder: (BuildContext context, GoRouterState state) {
-                return NoTransitionPage(child: SummaryOfAssignmentsView(classroom: state.extra as Classroom,));
+                return NoTransitionPage(
+                    child: SummaryOfAssignmentsView(
+                  classroomName: state.params['classroomName'] as String,
+                  classroomCode: state.params['classroomCode'] as String,
+                ));
               },
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'assignment_detail',
+              path: '/assignment_detail/:assignmentId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: TeacherAssignmentInfoScaffold(assignmentId:int.parse(state.params["assignmentId"]!) ,child: AssignmentDetailView(
+                    assignmentId:
+                    int.parse(state.params["assignmentId"]!)),
+                ))
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'summary_of_submissions',
+              path: '/summary_of_submissions/:assignmentId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: TeacherAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfSubmissionsView(
+                    assignmentId:
+                    int.parse(state.params["assignmentId"]!)),),
+              ),
             ),
           ],
           redirect: (context, state) {
             if (ref.read(authStateController.notifier).isInitialized == true &&
                 ref.read(authStateController.notifier).isLoggedIn == false &&
-                !(state.subloc == '/login' ||
-                    state.subloc == '/register')) {
-
+                !(state.subloc == '/login' || state.subloc == '/register')) {
               return '/login';
             } else if (ref.read(authStateController.notifier).isInitialized ==
                     true &&

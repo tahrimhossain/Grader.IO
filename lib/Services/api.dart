@@ -3,6 +3,7 @@ import 'package:grader_io/Exceptions/token_expired.dart';
 import 'package:grader_io/Exceptions/token_not_found.dart';
 import 'package:grader_io/Models/created_classrooms.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
+import 'package:grader_io/Models/summary_of_submissions.dart';
 import 'package:grader_io/Models/user_info.dart';
 import 'package:grader_io/Services/secure_storage_service.dart';
 import 'package:http/http.dart' as http;
@@ -101,6 +102,23 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfAssignments.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<SummaryOfSubmissions> getSummaryOfSubmissions(int assignmentId) async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissions/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return SummaryOfSubmissions.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");

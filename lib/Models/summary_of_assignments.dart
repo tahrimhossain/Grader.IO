@@ -1,15 +1,15 @@
-import 'assignment.dart';
+import 'assignment_summary.dart';
 
 class SummaryOfAssignments {
-  List<Assignment>? assignments;
+  List<AssignmentSummary>? assignments;
 
   SummaryOfAssignments({this.assignments});
 
   SummaryOfAssignments.fromJson(Map<String, dynamic> json) {
     if (json['assignments'] != null) {
-      assignments = <Assignment>[];
+      assignments = <AssignmentSummary>[];
       json['assignments'].forEach((v) {
-        assignments!.add(Assignment.fromJson(v));
+        assignments!.add(AssignmentSummary.fromJson(v));
       });
     }
   }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grader_io/Controllers/summary_of_assignments_view_controller.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
 
 import '../Models/classroom.dart';
 
 class SummaryOfAssignmentsView extends ConsumerStatefulWidget {
-  final Classroom classroom;
+  final String classroomCode;
+  final String classroomName;
 
-  const SummaryOfAssignmentsView({Key? key, required this.classroom})
+  const SummaryOfAssignmentsView({Key? key, required this.classroomCode,required this.classroomName})
       : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class SummaryOfAssignmentsViewState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) => ref
         .read(summaryOfAssignmentsViewControllerProvider.notifier)
-        .fetchAssignments(widget.classroom.code!));
+        .fetchAssignments(widget.classroomCode));
   }
 
   @override
@@ -36,7 +38,7 @@ class SummaryOfAssignmentsViewState
     return summaryOfAssignments.when(
       data: (summaryOfAssignments) => Scaffold(
         appBar: AppBar(
-          title: Text(widget.classroom.name!,
+          title: Text(widget.classroomName,
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -50,7 +52,7 @@ class SummaryOfAssignmentsViewState
             onRefresh: () async {
               ref
                   .read(summaryOfAssignmentsViewControllerProvider.notifier)
-                  .fetchAssignments(widget.classroom.code!);
+                  .fetchAssignments(widget.classroomCode);
             },
             child: summaryOfAssignments.assignments!.isEmpty
                 ? const Center(child: Text('No Assignments created'))
@@ -63,7 +65,9 @@ class SummaryOfAssignmentsViewState
                           elevation: 4.0,
                           shadowColor: Colors.blueGrey,
                           child: ListTile(
-                            onTap: () => {},
+                            onTap: (){
+                              GoRouter.of(context).push('/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
+                            },
                             title: Text(summaryOfAssignments
                                 .assignments![index].title!),
                           ),
@@ -76,7 +80,7 @@ class SummaryOfAssignmentsViewState
       ),
       error: (e, s) => Scaffold(
         appBar: AppBar(
-          title: Text(widget.classroom.name!,
+          title: Text(widget.classroomName,
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -90,7 +94,7 @@ class SummaryOfAssignmentsViewState
       ),
       loading: () => Scaffold(
         appBar: AppBar(
-          title: Text(widget.classroom.name!,
+          title: Text(widget.classroomName,
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

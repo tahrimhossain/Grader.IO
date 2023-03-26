@@ -1,4 +1,4 @@
-class Assignment {
+class AssignmentSummary {
   int? assignmentId;
   String? title;
   String? currentState;
@@ -6,14 +6,14 @@ class Assignment {
   DateTime? reviewDeadline;
 
 
-  Assignment(
+  AssignmentSummary(
       {this.assignmentId,
         this.title,
         this.currentState,
         this.submissionDeadline,
         this.reviewDeadline});
 
-  Assignment.fromJson(Map<String, dynamic> json) {
+  AssignmentSummary.fromJson(Map<String, dynamic> json) {
     assignmentId = json['assignment_id'];
     title = json['title'];
     currentState = json['current_state'];

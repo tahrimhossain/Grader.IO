@@ -7,19 +7,19 @@ import '../Controllers/auth_state_controller.dart';
 import '../Controllers/user_profile_view_controller.dart';
 import '../Services/secure_storage_service.dart';
 
-class ScaffoldWithBottomNavBar extends ConsumerStatefulWidget {
+class CreatedAndJoinedClassroomsScaffold extends ConsumerStatefulWidget {
   final Widget child;
 
-  const ScaffoldWithBottomNavBar({Key? key, required this.child})
+  const CreatedAndJoinedClassroomsScaffold({Key? key, required this.child})
       : super(key: key);
 
   @override
-  ScaffoldWithBottomNavBarState createState() =>
-      ScaffoldWithBottomNavBarState();
+  CreatedAndJoinedClassroomsScaffoldState createState() =>
+      CreatedAndJoinedClassroomsScaffoldState();
 }
 
-class ScaffoldWithBottomNavBarState
-    extends ConsumerState<ScaffoldWithBottomNavBar> {
+class CreatedAndJoinedClassroomsScaffoldState
+    extends ConsumerState<CreatedAndJoinedClassroomsScaffold> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<UserInfo> userInfo =
