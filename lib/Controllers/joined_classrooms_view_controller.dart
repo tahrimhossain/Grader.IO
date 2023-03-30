@@ -6,7 +6,7 @@ import '../Models/joined_classrooms.dart';
 import 'auth_state_controller.dart';
 
 final joinedClassroomsViewControllerProvider =
-StateNotifierProvider<JoinedClassroomsViewNotifier, AsyncValue<JoinedClassrooms>>((ref) {
+StateNotifierProvider.autoDispose<JoinedClassroomsViewNotifier, AsyncValue<JoinedClassrooms>>((ref) {
   return JoinedClassroomsViewNotifier(ref: ref);
 });
 

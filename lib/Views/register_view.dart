@@ -90,7 +90,7 @@ class LogInViewState extends ConsumerState<RegisterView> {
                         }
                       },
                       decoration: InputDecoration(
-                        hintText: "Enter Email",
+                        hintText: "Enter Name",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
                           borderSide: const BorderSide(),

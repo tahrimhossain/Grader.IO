@@ -6,7 +6,7 @@ import '../Exceptions/token_not_found.dart';
 import 'auth_state_controller.dart';
 
 final createdClassroomsViewControllerProvider =
-StateNotifierProvider<CreatedClassroomsViewNotifier, AsyncValue<CreatedClassrooms>>((ref) {
+StateNotifierProvider.autoDispose<CreatedClassroomsViewNotifier, AsyncValue<CreatedClassrooms>>((ref) {
   return CreatedClassroomsViewNotifier(ref: ref);
 });
 

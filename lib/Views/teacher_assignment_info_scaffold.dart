@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grader_io/Models/assignment_summary.dart';
+import '../Controllers/summary_of_submissions_view_controller.dart';
+import '../Models/summary_of_submissions.dart';
 
 class TeacherAssignmentInfoScaffold extends ConsumerStatefulWidget {
   final int assignmentId;
   final Widget child;
 
-
-  const TeacherAssignmentInfoScaffold({Key? key, required this.assignmentId,required this.child})
+  const TeacherAssignmentInfoScaffold(
+      {Key? key, required this.assignmentId, required this.child})
       : super(key: key);
 
   @override
@@ -18,9 +19,12 @@ class TeacherAssignmentInfoScaffold extends ConsumerStatefulWidget {
 
 class TeacherAssignmentInfoScaffoldState
     extends ConsumerState<TeacherAssignmentInfoScaffold> {
+  late AsyncValue<SummaryOfSubmissions> summaryOfSubmissions;
+
   @override
   Widget build(BuildContext context) {
-
+    summaryOfSubmissions =
+        ref.watch(summaryOfSubmissionsViewControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Grader.IO",
@@ -31,11 +35,22 @@ class TeacherAssignmentInfoScaffoldState
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-
+      floatingActionButton: GoRouter.of(context).location ==
+              "/summary_of_submissions/${widget.assignmentId}"
+          ? summaryOfSubmissions.when(
+              data: (summaryOfSubmissions) =>
+                  summaryOfSubmissions.currentState == 'grades_assigned'
+                      ? FloatingActionButton(onPressed: () {},child: const Icon(Icons.publish))
+                      : null,
+              error: (e, s) => null,
+              loading: () => null)
+          : null,
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex:
-          GoRouter.of(context).location == "/assignment_detail/${widget.assignmentId}" ? 0 : 1,
+          currentIndex: GoRouter.of(context).location ==
+                  "/assignment_detail/${widget.assignmentId}"
+              ? 0
+              : 1,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.details), label: "Details"),
@@ -44,9 +59,14 @@ class TeacherAssignmentInfoScaffoldState
           ],
           onTap: (index) {
             if (index == 0) {
-              GoRouter.of(context).pushReplacement('/assignment_detail/${widget.assignmentId}');
+              ref
+                  .read(summaryOfSubmissionsViewControllerProvider.notifier)
+                  .setStateToLoading();
+              GoRouter.of(context)
+                  .pushReplacement('/assignment_detail/${widget.assignmentId}');
             } else if (index == 1) {
-              GoRouter.of(context).pushReplacement('/summary_of_submissions/${widget.assignmentId}');
+              GoRouter.of(context).pushReplacement(
+                  '/summary_of_submissions/${widget.assignmentId}');
             }
           }),
     );
