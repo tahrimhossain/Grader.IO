@@ -40,7 +40,7 @@ class TeacherAssignmentInfoScaffoldState
           ? summaryOfSubmissions.when(
               data: (summaryOfSubmissions) =>
                   summaryOfSubmissions.currentState == 'grades_assigned'
-                      ? FloatingActionButton(onPressed: () {},child: const Icon(Icons.publish))
+                      ? FloatingActionButton(onPressed: () {},tooltip: "Publish Score",child: const Icon(Icons.publish),)
                       : null,
               error: (e, s) => null,
               loading: () => null)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grader_io/Controllers/summary_of_submissions_view_controller.dart';
 
 import '../Models/summary_of_submissions.dart';
@@ -52,7 +53,9 @@ class SummaryOfSubmissionsViewState
                           elevation: 4.0,
                           shadowColor: Colors.blueGrey,
                           child: ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              GoRouter.of(context).push('/submission_detail/${summaryOfSubmissions.submissions![index].submissionId}');
+                            },
                             title: Text(
                                 summaryOfSubmissions.submissions![index].name!),
                           ),

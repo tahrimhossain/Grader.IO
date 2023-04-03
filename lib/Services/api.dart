@@ -12,6 +12,7 @@ import 'package:grader_io/Services/secure_storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../Models/grade.dart';
 import '../Models/joined_classrooms.dart';
 import '../Models/review_detail.dart';
 
@@ -198,6 +199,25 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return ReviewDetail.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+
+  Future<Grade> getGrade(int submissionId)async{
+
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/submissiongrade/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return Grade.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");

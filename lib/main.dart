@@ -6,12 +6,16 @@ import 'package:grader_io/Views/created_classrooms_view.dart';
 import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
+import 'package:grader_io/Views/submission_detail_view.dart';
 import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
+import 'package:grader_io/Views/summary_of_submission_reviews_view.dart';
 import 'package:grader_io/Views/summary_of_submissions_view.dart';
 import 'package:grader_io/Views/teacher_assignment_info_scaffold.dart';
 import 'Controllers/auth_state_controller.dart';
 import 'Views/created_and_joined_classrooms_scaffold.dart';
+import 'Views/grade_view.dart';
 import 'Views/splash_screen.dart';
+import 'Views/teacher_submission_info_scaffold.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -21,8 +25,7 @@ class MyApp extends ConsumerWidget {
   MyApp({super.key});
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  final _shellNavigatorKeyForJoinedAndCreatedClassrooms =
-      GlobalKey<NavigatorState>();
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -124,6 +127,39 @@ class MyApp extends ConsumerWidget {
                 child: TeacherAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfSubmissionsView(
                     assignmentId:
                     int.parse(state.params["assignmentId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'submission_detail',
+              path: '/submission_detail/:submissionId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionDetailView(
+                    submissionId:
+                    int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'submission_grade',
+              path: '/submission_grade/:submissionId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: GradeView(
+                    submissionId:
+                    int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'summary_of_submission_reviews',
+              path: '/summary_of_submission_reviews/:submissionId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SummaryOfSubmissionReviewsView(
+                    submissionId:
+                    int.parse(state.params["submissionId"]!)),),
               ),
             ),
           ],
