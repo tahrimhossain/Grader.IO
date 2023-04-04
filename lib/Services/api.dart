@@ -110,6 +110,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -127,6 +129,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -145,6 +149,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -164,6 +170,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -183,6 +191,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -202,6 +212,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
@@ -221,6 +233,8 @@ class Api{
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
