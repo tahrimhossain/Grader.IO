@@ -6,6 +6,7 @@ import 'package:grader_io/Views/created_classrooms_view.dart';
 import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
+import 'package:grader_io/Views/review_detail_view.dart';
 import 'package:grader_io/Views/submission_detail_view.dart';
 import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
 import 'package:grader_io/Views/summary_of_submission_reviews_view.dart';
@@ -160,6 +161,15 @@ class MyApp extends ConsumerWidget {
                 child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SummaryOfSubmissionReviewsView(
                     submissionId:
                     int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'review_detail',
+              path: '/review_detail/:reviewId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: ReviewDetailView(reviewId:int.parse(state.params["reviewId"]!) ,)
               ),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grader_io/Models/summary_of_submission_reviews.dart';
 
 import '../Controllers/summary_of_submission_reviews_view_controller.dart';
@@ -52,7 +53,9 @@ class SummaryOfSubmissionReviewsViewState
                   elevation: 4.0,
                   shadowColor: Colors.blueGrey,
                   child: ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).push('/review_detail/${summaryOfSubmissionReviews.reviews![index].reviewId}');
+                    },
                     title: Text(
                         summaryOfSubmissionReviews.reviews![index].name!),
                   ),

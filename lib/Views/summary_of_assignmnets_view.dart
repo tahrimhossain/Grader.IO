@@ -66,7 +66,12 @@ class SummaryOfAssignmentsViewState
                           shadowColor: Colors.blueGrey,
                           child: ListTile(
                             onTap: (){
-                              GoRouter.of(context).push('/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
+                              if(GoRouter.of(context).location == "/created_classrooms"){
+                                GoRouter.of(context).push('/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
+                              }else{
+
+                              }
+
                             },
                             title: Text(summaryOfAssignments
                                 .assignments![index].title!),

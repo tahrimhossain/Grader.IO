@@ -4,6 +4,7 @@ import 'package:grader_io/Exceptions/token_not_found.dart';
 import 'package:grader_io/Models/assignment_detail.dart';
 import 'package:grader_io/Models/created_classrooms.dart';
 import 'package:grader_io/Models/submission_detail.dart';
+import 'package:grader_io/Models/summary_of_assigned_submissions_for_review.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
 import 'package:grader_io/Models/summary_of_submission_reviews.dart';
 import 'package:grader_io/Models/summary_of_submissions.dart';
@@ -244,6 +245,61 @@ class Api{
   }
 
 
+  Future<SummaryOfAssignedSubmissionsForReview> getSummaryOfAssignedSubmissionsForReview(int assignmentId)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignedsubmissionsforreview/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return SummaryOfAssignedSubmissionsForReview.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
 
+  Future<SummaryOfSubmissionReviews> getSummaryOfReviewsGottenForCreatedSubmission(int assignmentId)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofreviewsgottenforcreatedsubmission/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return SummaryOfSubmissionReviews.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<Grade> getAssignmentGrade(int assignmentId) async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/assignmentgrade/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return Grade.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
 
 }
