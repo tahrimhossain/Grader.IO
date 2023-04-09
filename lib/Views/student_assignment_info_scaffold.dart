@@ -31,6 +31,7 @@ class StudentAssignmentInfoScaffoldState
       ),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: GoRouter.of(context).location ==
                   "/assignment_info/${widget.assignmentId}"
               ? 0
@@ -41,29 +42,30 @@ class StudentAssignmentInfoScaffoldState
                           "/assigned_reviews/${widget.assignmentId}"
                       ? 2
                       : GoRouter.of(context).location ==
-                              "/received_reviews/${widget.assignmentId}"
+                              "/summary_of_received_reviews/${widget.assignmentId}"
                           ? 3
                           : 4,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.details), label: "Details"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.assignment_outlined), label: "Submissions"),
+                icon: Icon(Icons.assignment), label: "Submission"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.reviews_sharp), label: "Assigned Reviews"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.reviews_sharp), label: "Received Reviews"),
+            BottomNavigationBarItem(icon: Icon(Icons.grade), label: "Grade"),
           ],
           onTap: (index) {
             if (index == 0) {
               GoRouter.of(context)
                   .pushReplacement('/assignment_info/${widget.assignmentId}');
             } else if (index == 1) {
-              GoRouter.of(context).pushReplacement(
-                  '/created_submission/${widget.assignmentId}');
             } else if (index == 2) {
-              GoRouter.of(context)
-                  .pushReplacement('/assigned_reviews/${widget.assignmentId}');
             } else if (index == 3) {
               GoRouter.of(context)
-                  .pushReplacement('/received_reviews/${widget.assignmentId}');
-            } else {
+                  .pushReplacement('/summary_of_received_reviews/${widget.assignmentId}');
+            }else if(index == 4){
               GoRouter.of(context)
                   .pushReplacement('/assignment_grade/${widget.assignmentId}');
             }

@@ -66,10 +66,10 @@ class SummaryOfAssignmentsViewState
                           shadowColor: Colors.blueGrey,
                           child: ListTile(
                             onTap: (){
-                              if(GoRouter.of(context).location == "/created_classrooms"){
+                              if(GoRouter.of(context).location.startsWith("/summary_of_assignments_in_created_classroom") == true){
                                 GoRouter.of(context).push('/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
                               }else{
-
+                                GoRouter.of(context).push('/assignment_info/${summaryOfAssignments.assignments![index].assignmentId}');
                               }
 
                             },

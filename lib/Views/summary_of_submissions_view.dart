@@ -35,42 +35,42 @@ class SummaryOfSubmissionsViewState
 
     return summaryOfSubmissions.when(
       data: (summaryOfSubmissions) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RefreshIndicator(
-            onRefresh: () async {
-              ref
-                  .read(summaryOfSubmissionsViewControllerProvider.notifier)
-                  .fetchSummaryOfSubmissions(widget.assignmentId);
-            },
-            child: summaryOfSubmissions.submissions!.isEmpty
-                ? const Center(child: Text('No Submissions'))
-                : ListView.builder(
-                    itemCount: summaryOfSubmissions.submissions!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Material(
-                          elevation: 4.0,
-                          shadowColor: Colors.blueGrey,
-                          child: ListTile(
-                            onTap: () {
-                              GoRouter.of(context).push('/submission_detail/${summaryOfSubmissions.submissions![index].submissionId}');
-                            },
-                            title: Text(
-                                summaryOfSubmissions.submissions![index].name!),
-                          ),
+        padding: const EdgeInsets.all(8.0),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            ref
+                .read(summaryOfSubmissionsViewControllerProvider.notifier)
+                .fetchSummaryOfSubmissions(widget.assignmentId);
+          },
+          child: summaryOfSubmissions.submissions!.isEmpty
+              ? const Center(child: Text('No Submissions'))
+              : ListView.builder(
+                  itemCount: summaryOfSubmissions.submissions!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Material(
+                        elevation: 4.0,
+                        shadowColor: Colors.blueGrey,
+                        child: ListTile(
+                          onTap: () {
+                            GoRouter.of(context).push(
+                                '/submission_detail/${summaryOfSubmissions.submissions![index].submissionId}');
+                          },
+                          title: Text("Submission $index"),
+                          subtitle: Text(
+                              summaryOfSubmissions.submissions![index].name!),
                         ),
-                      );
-                    },
-                  ),
-          ),
+                      ),
+                    );
+                  },
+                ),
         ),
-
-      error: (e, s) =>Center(
-          child: Text(e.toString()),
-        ),
+      ),
+      error: (e, s) => Center(
+        child: Text(e.toString()),
+      ),
       loading: () => const Center(child: CircularProgressIndicator()),
-
     );
   }
 }

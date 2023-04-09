@@ -48,7 +48,7 @@ class CreatedClassroomsViewState extends ConsumerState<CreatedClassroomsView> {
                         shadowColor: Colors.blueGrey,
                         child: ListTile(
                           onTap: () => {
-                            GoRouter.of(context).push('/summary_of_assignments/${createdClassrooms.classrooms![index].name!}/${createdClassrooms.classrooms![index].code!}',)
+                            GoRouter.of(context).push('/summary_of_assignments_in_created_classroom/${createdClassrooms.classrooms![index].name!}/${createdClassrooms.classrooms![index].code!}',)
                           },
                           title:
                               Text(createdClassrooms.classrooms![index].name!),

@@ -16,10 +16,24 @@ class GradeViewNotifier extends StateNotifier<AsyncValue<Grade>> {
 
   GradeViewNotifier({required this.ref}) : super(const AsyncLoading());
 
-  Future<void> fetchGrade(int submissionId) async {
+  Future<void> fetchSubmissionGrade(int submissionId) async {
     state = const AsyncLoading();
     try {
       Grade grade = await ref.read(apiProvider).getGrade(submissionId);
+      state = AsyncData(grade);
+    }on TokenNotFoundException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    }on TokenExpiredException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    } catch (e, stacktrace) {
+      state = AsyncError(e, stacktrace);
+    }
+  }
+
+  Future<void> fetchAssignmentGrade(int assignmentId)async{
+    state = const AsyncLoading();
+    try {
+      Grade grade = await ref.read(apiProvider).getAssignmentGrade(assignmentId);
       state = AsyncData(grade);
     }on TokenNotFoundException catch(e){
       ref.read(authStateController.notifier).changeStatusToLoggedOut();

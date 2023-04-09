@@ -50,8 +50,7 @@ class JoinedClassroomsViewState extends ConsumerState<JoinedClassroomsView> {
                   shadowColor: Colors.blueGrey,
                   child: ListTile(
                     onTap: () => {
-                      GoRouter.of(context).push('/summary_of_assignments',
-                          extra: joinedClassrooms.classrooms![index])
+                      GoRouter.of(context).push('/summary_of_assignments_in_joined_classroom/${joinedClassrooms.classrooms![index].name!}/${joinedClassrooms.classrooms![index].code!}',)
                     },
                     title: Text( joinedClassrooms.classrooms![index].name!),
                     subtitle: Text(joinedClassrooms.classrooms![index].description!),

@@ -7,14 +7,17 @@ import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
 import 'package:grader_io/Views/review_detail_view.dart';
+import 'package:grader_io/Views/student_assignment_info_scaffold.dart';
 import 'package:grader_io/Views/submission_detail_view.dart';
 import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
+import 'package:grader_io/Views/summary_of_received_reviews_view.dart';
 import 'package:grader_io/Views/summary_of_submission_reviews_view.dart';
 import 'package:grader_io/Views/summary_of_submissions_view.dart';
 import 'package:grader_io/Views/teacher_assignment_info_scaffold.dart';
 import 'Controllers/auth_state_controller.dart';
+import 'Views/assignment_grade_view.dart';
 import 'Views/created_and_joined_classrooms_scaffold.dart';
-import 'Views/grade_view.dart';
+import 'Views/submission_grade_view.dart';
 import 'Views/splash_screen.dart';
 import 'Views/teacher_submission_info_scaffold.dart';
 
@@ -98,14 +101,26 @@ class MyApp extends ConsumerWidget {
             ),
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
-              name: 'summary_of_assignments',
-              path: '/summary_of_assignments/:classroomName/:classroomCode',
+              name: 'summary_of_assignments_in_created_classroom',
+              path: '/summary_of_assignments_in_created_classroom/:classroomName/:classroomCode',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return NoTransitionPage(
                     child: SummaryOfAssignmentsView(
                   classroomName: state.params['classroomName'] as String,
                   classroomCode: state.params['classroomCode'] as String,
                 ));
+              },
+            ),
+            GoRoute(
+              parentNavigatorKey: _rootNavigatorKey,
+              name: 'summary_of_assignments_in_joined_classroom',
+              path: '/summary_of_assignments_in_joined_classroom/:classroomName/:classroomCode',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return NoTransitionPage(
+                    child: SummaryOfAssignmentsView(
+                      classroomName: state.params['classroomName'] as String,
+                      classroomCode: state.params['classroomCode'] as String,
+                    ));
               },
             ),
             GoRoute(
@@ -118,6 +133,17 @@ class MyApp extends ConsumerWidget {
                     assignmentId:
                     int.parse(state.params["assignmentId"]!)),
                 ))
+            ),
+            GoRoute(
+                parentNavigatorKey:
+                _rootNavigatorKey,
+                name: 'assignment_info',
+                path: '/assignment_info/:assignmentId',
+                pageBuilder: (context, state) => NoTransitionPage(
+                    child: StudentAssignmentInfoScaffold(assignmentId:int.parse(state.params["assignmentId"]!),child: AssignmentDetailView(
+                        assignmentId:
+                        int.parse(state.params["assignmentId"]!)),
+                    ))
             ),
             GoRoute(
               parentNavigatorKey:
@@ -147,9 +173,20 @@ class MyApp extends ConsumerWidget {
               name: 'submission_grade',
               path: '/submission_grade/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: GradeView(
+                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionGradeView(
                     submissionId:
                     int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'assignment_grade',
+              path: '/assignment_grade/:assignmentId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: AssignmentGradeView(
+                    assignmentId:
+                    int.parse(state.params["assignmentId"]!)),),
               ),
             ),
             GoRoute(
@@ -161,6 +198,17 @@ class MyApp extends ConsumerWidget {
                 child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SummaryOfSubmissionReviewsView(
                     submissionId:
                     int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'summary_of_received_reviews',
+              path: '/summary_of_received_reviews/:assignmentId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfReceivedReviewsView(
+                    assignmentId:
+                    int.parse(state.params["assignmentId"]!)),),
               ),
             ),
             GoRoute(
