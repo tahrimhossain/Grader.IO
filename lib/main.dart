@@ -56,9 +56,15 @@ class MyApp extends ConsumerWidget {
       ),
       routerConfig: GoRouter(
           navigatorKey: _rootNavigatorKey,
-          initialLocation: '/splash',
           refreshListenable: ref.watch(authStateController),
           routes: [
+            GoRoute(
+              parentNavigatorKey: _rootNavigatorKey,
+              path: '/',
+              builder: (BuildContext context, GoRouterState state) {
+                return const SplashScreen();
+              },
+            ),
             GoRoute(
               parentNavigatorKey:
               _rootNavigatorKey,
@@ -76,14 +82,6 @@ class MyApp extends ConsumerWidget {
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: CreatedAndJoinedClassroomsScaffold(child: JoinedClassroomsView()),
               ),
-            ),
-            GoRoute(
-              parentNavigatorKey: _rootNavigatorKey,
-              name: 'splash',
-              path: '/splash',
-              builder: (BuildContext context, GoRouterState state) {
-                return const SplashScreen();
-              },
             ),
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
@@ -255,7 +253,7 @@ class MyApp extends ConsumerWidget {
                 ref.read(authStateController.notifier).isLoggedIn == true &&
                 (state.subloc == '/login' ||
                     state.subloc == '/register' ||
-                    state.subloc == '/splash')) {
+                    state.subloc == '/')) {
               return '/created_classrooms';
             } else {
               return null;
