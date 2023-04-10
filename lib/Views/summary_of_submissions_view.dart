@@ -57,7 +57,7 @@ class SummaryOfSubmissionsViewState
                             GoRouter.of(context).push(
                                 '/submission_detail/${summaryOfSubmissions.submissions![index].submissionId}');
                           },
-                          title: Text("Submission $index"),
+                          title: Text("Submission ${index+1}"),
                           subtitle: Text(
                               summaryOfSubmissions.submissions![index].name!),
                         ),

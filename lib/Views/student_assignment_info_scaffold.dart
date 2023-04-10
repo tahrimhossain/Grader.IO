@@ -39,7 +39,7 @@ class StudentAssignmentInfoScaffoldState
                       "/created_submission/${widget.assignmentId}"
                   ? 1
                   : GoRouter.of(context).location ==
-                          "/assigned_reviews/${widget.assignmentId}"
+                          "/summary_of_assigned_reviews/${widget.assignmentId}"
                       ? 2
                       : GoRouter.of(context).location ==
                               "/summary_of_received_reviews/${widget.assignmentId}"
@@ -62,6 +62,8 @@ class StudentAssignmentInfoScaffoldState
                   .pushReplacement('/assignment_info/${widget.assignmentId}');
             } else if (index == 1) {
             } else if (index == 2) {
+              GoRouter.of(context)
+                  .pushReplacement('/summary_of_assigned_reviews/${widget.assignmentId}');
             } else if (index == 3) {
               GoRouter.of(context)
                   .pushReplacement('/summary_of_received_reviews/${widget.assignmentId}');

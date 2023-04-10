@@ -1,10 +1,10 @@
 import 'package:grader_io/Models/submission_summary.dart';
 
 class SummaryOfAssignedSubmissionsForReview {
-  String? currentState;
+
   List<SubmissionSummary>? submissions;
 
-  SummaryOfAssignedSubmissionsForReview({this.currentState,this.submissions});
+  SummaryOfAssignedSubmissionsForReview({this.submissions});
 
   SummaryOfAssignedSubmissionsForReview.fromJson(Map<String, dynamic> json) {
 

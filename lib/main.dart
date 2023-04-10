@@ -8,6 +8,7 @@ import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
 import 'package:grader_io/Views/review_detail_view.dart';
 import 'package:grader_io/Views/student_assignment_info_scaffold.dart';
+import 'package:grader_io/Views/student_submission_info_scaffold.dart';
 import 'package:grader_io/Views/submission_detail_view.dart';
 import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
 import 'package:grader_io/Views/summary_of_received_reviews_view.dart';
@@ -19,6 +20,7 @@ import 'Views/assignment_grade_view.dart';
 import 'Views/created_and_joined_classrooms_scaffold.dart';
 import 'Views/submission_grade_view.dart';
 import 'Views/splash_screen.dart';
+import 'Views/summary_of_assigned_reviews_view.dart';
 import 'Views/teacher_submission_info_scaffold.dart';
 
 void main() {
@@ -196,6 +198,28 @@ class MyApp extends ConsumerWidget {
               path: '/summary_of_submission_reviews/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
                 child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SummaryOfSubmissionReviewsView(
+                    submissionId:
+                    int.parse(state.params["submissionId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'summary_of_assigned_reviews',
+              path: '/summary_of_assigned_reviews/:assignmentId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfAssignedReviewsView(
+                    assignmentId:
+                    int.parse(state.params["assignmentId"]!)),),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'submission_info',
+              path: '/submission_info/:submissionId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: StudentSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionDetailView(
                     submissionId:
                     int.parse(state.params["submissionId"]!)),),
               ),

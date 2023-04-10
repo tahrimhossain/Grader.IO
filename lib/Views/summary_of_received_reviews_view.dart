@@ -43,7 +43,7 @@ class SummaryOfReceivedReviewsViewState
                 .fetchReceivedReviews(widget.assignmentId);
           },
           child: summaryOfReceivedReviews.reviews!.isEmpty
-              ? const Center(child: Text('No Reviews'))
+              ? const Center(child: Text('No Reviews Received'))
               : ListView.builder(
             itemCount: summaryOfReceivedReviews.reviews!.length,
             itemBuilder: (BuildContext context, int index) {
@@ -56,7 +56,7 @@ class SummaryOfReceivedReviewsViewState
                     onTap: () {
                       GoRouter.of(context).push('/review_detail/${summaryOfReceivedReviews.reviews![index].reviewId}');
                     },
-                    title: Text("Review $index"),
+                    title: Text("Review ${index+1}"),
                   ),
                 ),
               );

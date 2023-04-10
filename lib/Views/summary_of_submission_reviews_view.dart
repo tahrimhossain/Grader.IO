@@ -56,7 +56,8 @@ class SummaryOfSubmissionReviewsViewState
                     onTap: () {
                       GoRouter.of(context).push('/review_detail/${summaryOfSubmissionReviews.reviews![index].reviewId}');
                     },
-                    title: Text(
+                    title: Text("Review ${index+1}"),
+                    subtitle: Text(
                         summaryOfSubmissionReviews.reviews![index].name!),
                   ),
                 ),

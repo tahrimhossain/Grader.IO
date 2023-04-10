@@ -24,12 +24,14 @@ final apiProvider = Provider((ref) {
 class Api{
 
   Ref ref;
-  String baseUrl = 'http://127.0.0.1:5000';
+
+  //String baseUrl = 'http://127.0.0.1:5000';
+  String baseUrl = 'https://grader-io.onrender.com';
 
   Api({required this.ref});
 
   Future<String> register(String email, String name, String password) async {
-    http.Response response = await http.post(Uri.parse('$baseUrl/register'),headers: {"Access-Control-Allow-Origin": "*","Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"name":name,"password":password})).timeout(const Duration(seconds: 7));
+    http.Response response = await http.post(Uri.parse('$baseUrl/register'),headers: {"Access-Control-Allow-Origin": "*","Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"name":name,"password":password})).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return jsonData["access_token"];
@@ -39,7 +41,7 @@ class Api{
   }
 
   Future<String> logIn(String email, String password) async {
-    http.Response response = await http.post(Uri.parse('$baseUrl/login'),headers: {"Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"password":password})).timeout(const Duration(seconds: 7));
+    http.Response response = await http.post(Uri.parse('$baseUrl/login'),headers: {"Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"password":password})).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return jsonData["access_token"];
@@ -50,7 +52,7 @@ class Api{
 
   Future<UserInfo> getUserInfo()async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/userinfo'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/userinfo'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return UserInfo.fromJson(jsonData);
@@ -68,7 +70,7 @@ class Api{
 
   Future<CreatedClassrooms> getCreatedClassrooms()async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/createdclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/createdclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return CreatedClassrooms.fromJson(jsonData);
@@ -87,7 +89,7 @@ class Api{
 
   Future<JoinedClassrooms> getJoinedClassrooms()async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/joinedclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/joinedclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return JoinedClassrooms.fromJson(jsonData);
@@ -104,7 +106,7 @@ class Api{
 
   Future<SummaryOfAssignments> getSummaryOfAssignments(String classroomCode)async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignments/$classroomCode'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignments/$classroomCode'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfAssignments.fromJson(jsonData);
@@ -123,7 +125,7 @@ class Api{
 
   Future<SummaryOfSubmissions> getSummaryOfSubmissions(int assignmentId) async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissions/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissions/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfSubmissions.fromJson(jsonData);
@@ -143,7 +145,7 @@ class Api{
   Future<AssignmentDetail> getAssignmentDetail(int assignmentId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/assignmentdetail/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/assignmentdetail/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return AssignmentDetail.fromJson(jsonData);
@@ -164,7 +166,7 @@ class Api{
   Future<SubmissionDetail> getSubmissionDetail(int submissionId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/submissiondetail/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/submissiondetail/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SubmissionDetail.fromJson(jsonData);
@@ -185,7 +187,7 @@ class Api{
   Future<SummaryOfSubmissionReviews> getSummaryOfSubmissionReviews(int submissionId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissionreviews/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissionreviews/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfSubmissionReviews.fromJson(jsonData);
@@ -206,7 +208,7 @@ class Api{
   Future<ReviewDetail> getReviewDetail(int reviewId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/reviewdetail/$reviewId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/reviewdetail/$reviewId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return ReviewDetail.fromJson(jsonData);
@@ -227,7 +229,7 @@ class Api{
   Future<Grade> getGrade(int submissionId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/submissiongrade/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/submissiongrade/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return Grade.fromJson(jsonData);
@@ -247,7 +249,7 @@ class Api{
 
   Future<SummaryOfAssignedSubmissionsForReview> getSummaryOfAssignedSubmissionsForReview(int assignmentId)async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignedsubmissionsforreview/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignedsubmissionsforreview/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfAssignedSubmissionsForReview.fromJson(jsonData);
@@ -266,7 +268,7 @@ class Api{
 
   Future<SummaryOfSubmissionReviews> getSummaryOfReviewsGottenForCreatedSubmission(int assignmentId)async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofreviewsgottenforcreatedsubmission/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/summaryofreviewsgottenforcreatedsubmission/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return SummaryOfSubmissionReviews.fromJson(jsonData);
@@ -285,7 +287,7 @@ class Api{
 
   Future<Grade> getAssignmentGrade(int assignmentId) async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/assignmentgrade/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    http.Response response = await http.get(Uri.parse('$baseUrl/assignmentgrade/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return Grade.fromJson(jsonData);
