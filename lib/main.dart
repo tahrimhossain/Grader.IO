@@ -10,7 +10,7 @@ import 'package:grader_io/Views/review_detail_view.dart';
 import 'package:grader_io/Views/student_assignment_info_scaffold.dart';
 import 'package:grader_io/Views/student_submission_info_scaffold.dart';
 import 'package:grader_io/Views/submission_detail_view.dart';
-import 'package:grader_io/Views/summary_of_assignmnets_view.dart';
+import 'package:grader_io/Views/summary_of_assignments_view.dart';
 import 'package:grader_io/Views/summary_of_received_reviews_view.dart';
 import 'package:grader_io/Views/summary_of_submission_reviews_view.dart';
 import 'package:grader_io/Views/summary_of_submissions_view.dart';

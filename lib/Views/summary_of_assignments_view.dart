@@ -10,7 +10,8 @@ class SummaryOfAssignmentsView extends ConsumerStatefulWidget {
   final String classroomCode;
   final String classroomName;
 
-  const SummaryOfAssignmentsView({Key? key, required this.classroomCode,required this.classroomName})
+  const SummaryOfAssignmentsView(
+      {Key? key, required this.classroomCode, required this.classroomName})
       : super(key: key);
 
   @override
@@ -46,6 +47,15 @@ class SummaryOfAssignmentsViewState
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
+        floatingActionButton: GoRouter.of(context).location.startsWith(
+                    "/summary_of_assignments_in_created_classroom") ==
+                true
+            ? FloatingActionButton(
+                onPressed: () {},
+                tooltip: "Create Assignment",
+                child: const Icon(Icons.add),
+              )
+            : null,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: RefreshIndicator(
@@ -65,13 +75,16 @@ class SummaryOfAssignmentsViewState
                           elevation: 4.0,
                           shadowColor: Colors.blueGrey,
                           child: ListTile(
-                            onTap: (){
-                              if(GoRouter.of(context).location.startsWith("/summary_of_assignments_in_created_classroom") == true){
-                                GoRouter.of(context).push('/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
-                              }else{
-                                GoRouter.of(context).push('/assignment_info/${summaryOfAssignments.assignments![index].assignmentId}');
+                            onTap: () {
+                              if (GoRouter.of(context).location.startsWith(
+                                      "/summary_of_assignments_in_created_classroom") ==
+                                  true) {
+                                GoRouter.of(context).push(
+                                    '/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
+                              } else {
+                                GoRouter.of(context).push(
+                                    '/assignment_info/${summaryOfAssignments.assignments![index].assignmentId}');
                               }
-
                             },
                             title: Text(summaryOfAssignments
                                 .assignments![index].title!),

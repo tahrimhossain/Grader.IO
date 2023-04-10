@@ -91,6 +91,18 @@ class CreatedAndJoinedClassroomsScaffoldState
         ),
       ),
       body: widget.child,
+      floatingActionButton:
+          GoRouter.of(context).location == "/created_classrooms"
+              ? FloatingActionButton(
+                  onPressed: () {},
+                  tooltip: "Create Classroom",
+                  child: const Icon(Icons.add),
+                )
+              : FloatingActionButton(
+                  onPressed: () {},
+                  tooltip: "Join Classroom",
+                  child: const Icon(Icons.person_add),
+                ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex:
               GoRouter.of(context).location == "/created_classrooms" ? 0 : 1,
