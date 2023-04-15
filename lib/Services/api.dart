@@ -104,6 +104,17 @@ class Api{
     }
   }
 
+  Future<void> createClassroom(String name, String description) async {
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/createclassroom'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"name":name,"description":description})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
   Future<SummaryOfAssignments> getSummaryOfAssignments(String classroomCode)async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.get(Uri.parse('$baseUrl/summaryofassignments/$classroomCode'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
@@ -123,6 +134,17 @@ class Api{
     }
   }
 
+  Future<void> createAssignment(String code, String title,String description, String instructions, int maxScore, int numberOfReviewersPerSubmission, String submissionDeadline, String reviewDeadline) async {
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/createassignment'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"code":code,"title":title,"description":description,"instructions":instructions,"max_score":maxScore,"number_of_reviewers_per_submission":numberOfReviewersPerSubmission,"submission_deadline":submissionDeadline,"review_deadline":reviewDeadline})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
   Future<SummaryOfSubmissions> getSummaryOfSubmissions(int assignmentId) async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.get(Uri.parse('$baseUrl/summaryofsubmissions/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
@@ -137,6 +159,28 @@ class Api{
       }else{
         throw TokenNotFoundException(message: "token not found");
       }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<void> publishScore(int assignmentId)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/publishscore'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"assignment_id":assignmentId})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return;
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<void> updateFinalScore(int submissionId, int finalScore)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/updatefinalscore'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"submission_id":submissionId,"final_score":finalScore})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return;
     }else{
       throw Exception(jsonData["message"]);
     }
