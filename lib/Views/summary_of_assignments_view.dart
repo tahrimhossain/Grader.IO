@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grader_io/Controllers/summary_of_assignments_view_controller.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
+import 'package:intl/intl.dart';
 
 import '../Models/classroom.dart';
 
@@ -31,8 +34,18 @@ class SummaryOfAssignmentsViewState
         .fetchAssignments(widget.classroomCode));
   }
 
+  var assignmentStates = {'accepting_submissions' : 'Accepting Submissions', 
+                          'accepting_reviews' : 'Accepting Reviews', 
+                          'grades_assigned' : 'Grades Assigned',
+                          'grades_finalised' : 'Grades Finalised'};
+
   @override
   Widget build(BuildContext context) {
+
+    double width = MediaQuery. of(context). size. width;
+    double height = MediaQuery. of(context). size. height;
+
+
     summaryOfAssignments =
         ref.watch(summaryOfAssignmentsViewControllerProvider);
 
@@ -56,43 +69,186 @@ class SummaryOfAssignmentsViewState
                 child: const Icon(Icons.add),
               )
             : null,
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RefreshIndicator(
-            onRefresh: () async {
-              ref
-                  .read(summaryOfAssignmentsViewControllerProvider.notifier)
-                  .fetchAssignments(widget.classroomCode);
-            },
-            child: summaryOfAssignments.assignments!.isEmpty
-                ? const Center(child: Text('No Assignments created'))
-                : ListView.builder(
-                    itemCount: summaryOfAssignments.assignments!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Material(
-                          elevation: 4.0,
-                          shadowColor: Colors.blueGrey,
-                          child: ListTile(
-                            onTap: () {
-                              if (GoRouter.of(context).location.startsWith(
-                                      "/summary_of_assignments_in_created_classroom") ==
-                                  true) {
-                                GoRouter.of(context).push(
-                                    '/assignment_detail/${summaryOfAssignments.assignments![index].assignmentId}');
-                              } else {
-                                GoRouter.of(context).push(
-                                    '/assignment_info/${summaryOfAssignments.assignments![index].assignmentId}');
-                              }
-                            },
-                            title: Text(summaryOfAssignments
-                                .assignments![index].title!),
+        body: SingleChildScrollView(
+        child: Container(
+          height: height,
+          width: width,
+          child: GridView.count(
+            primary: false,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: width ~/ 350,
+            childAspectRatio: 1.2,
+            children: <Widget>[
+              for (var item in summaryOfAssignments.assignments!)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: InkWell(
+                    child: Card(
+                      color: Colors.blueGrey,
+                      elevation: 10.0,
+                      shadowColor: Colors.black,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min, // add this
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3, 
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              child: Text(
+                                item.title!,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            )
                           ),
-                        ),
-                      );
+                          Expanded(
+                            flex: 1, 
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              color: Colors.white,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      child: Text(
+                                        "State: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        assignmentStates[item.currentState!]!,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  SizedBox(width: 10,),
+                                ],
+                              ),
+                            )
+                          ),
+                          Expanded(
+                            flex: 1, 
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              color: Colors.white,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      child: Text(
+                                        "Submission Deadline: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        DateFormat('HH:mm dd-MM-yyyy').format(item.submissionDeadline!),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  SizedBox(width: 10,),
+                                ],
+                              ),
+                            )
+                          ),
+                          Expanded(
+                            flex: 1, 
+                            child: Container(
+                              padding: EdgeInsets.all(3),
+                              color: Colors.white,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      child: Text(
+                                        "Review Deadline: ",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  Expanded(
+                                    flex: 1,                              
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        DateFormat('HH:mm dd-MM-yyyy').format(item.reviewDeadline!),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black
+                                        ),
+                                      )
+                                    )
+                                  ),
+                                  SizedBox(width: 10,),
+                                ],
+                              ),
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      if (GoRouter.of(context).location.startsWith(
+                              "/summary_of_assignments_in_created_classroom") ==
+                          true) {
+                        GoRouter.of(context).push(
+                            '/assignment_detail/${item.assignmentId}');
+                      } else {
+                        GoRouter.of(context).push(
+                            '/assignment_info/${item.assignmentId}');
+                      }
                     },
                   ),
+                ),
+              ],
+            )
           ),
         ),
       ),
@@ -124,4 +280,5 @@ class SummaryOfAssignmentsViewState
       ),
     );
   }
+
 }

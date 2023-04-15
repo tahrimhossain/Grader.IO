@@ -41,7 +41,7 @@ class Api{
   }
 
   Future<String> logIn(String email, String password) async {
-    http.Response response = await http.post(Uri.parse('$baseUrl/login'),headers: {"Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"password":password})).timeout(const Duration(seconds: 20));
+    http.Response response = await http.post(Uri.parse('$baseUrl/login'),headers: {"Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"password":password})).timeout(const Duration(seconds: 60));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return jsonData["access_token"];
