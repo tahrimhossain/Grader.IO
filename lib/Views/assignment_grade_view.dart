@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../Controllers/grade_view_controller.dart';
+import '../Controllers/assignment_grade_view_controller.dart';
 import '../Models/grade.dart';
 
 class AssignmentGradeView extends ConsumerStatefulWidget {
@@ -21,13 +21,13 @@ class AssignmentGradeViewState extends ConsumerState<AssignmentGradeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) => ref
-        .read(gradeViewControllerProvider.notifier)
+        .read(assignmentGradeViewControllerProvider.notifier)
         .fetchAssignmentGrade(widget.assignmentId));
   }
 
   @override
   Widget build(BuildContext context) {
-    grade = ref.watch(gradeViewControllerProvider);
+    grade = ref.watch(assignmentGradeViewControllerProvider);
 
     return grade.when(
       data: (grade) => Padding(
@@ -35,7 +35,7 @@ class AssignmentGradeViewState extends ConsumerState<AssignmentGradeView> {
         child: RefreshIndicator(
             onRefresh: () async {
               ref
-                  .read(gradeViewControllerProvider.notifier)
+                  .read(assignmentGradeViewControllerProvider.notifier)
                   .fetchAssignmentGrade(widget.assignmentId);
             },
             child: Center(

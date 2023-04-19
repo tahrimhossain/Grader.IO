@@ -16,6 +16,7 @@ import 'dart:convert';
 import '../Models/grade.dart';
 import '../Models/joined_classrooms.dart';
 import '../Models/review_detail.dart';
+import '../Models/submission_grade.dart';
 
 final apiProvider = Provider((ref) {
   return Api(ref: ref);
@@ -70,7 +71,7 @@ class Api{
 
   Future<CreatedClassrooms> getCreatedClassrooms()async{
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
-    http.Response response = await http.get(Uri.parse('$baseUrl/createdclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
+    http.Response response = await http.get(Uri.parse('$baseUrl/createdclassrooms'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 120));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return CreatedClassrooms.fromJson(jsonData);
@@ -270,13 +271,13 @@ class Api{
   }
 
 
-  Future<Grade> getGrade(int submissionId)async{
+  Future<SubmissionGrade> getSubmissionGrade(int submissionId)async{
 
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.get(Uri.parse('$baseUrl/submissiongrade/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
-      return Grade.fromJson(jsonData);
+      return SubmissionGrade.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
