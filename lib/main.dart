@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grader_io/Views/assignment_detail_view.dart';
+import 'package:grader_io/Views/create_classroom_view.dart';
 import 'package:grader_io/Views/created_classrooms_view.dart';
+import 'package:grader_io/Views/join_classroom_view.dart';
 import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
@@ -77,10 +79,28 @@ class MyApp extends ConsumerWidget {
             GoRoute(
               parentNavigatorKey:
               _rootNavigatorKey,
+              name: 'create_classroom',
+              path: '/create_classroom',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: CreateClassroomView(),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
               name: 'joined_classrooms',
               path: '/joined_classrooms',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: CreatedAndJoinedClassroomsScaffold(child: JoinedClassroomsView()),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey:
+              _rootNavigatorKey,
+              name: 'join_classroom',
+              path: '/join_classroom',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: JoinClassroomView(),
               ),
             ),
             GoRoute(
