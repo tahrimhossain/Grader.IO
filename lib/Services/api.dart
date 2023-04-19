@@ -111,6 +111,12 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return;
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
     }else{
       throw Exception(jsonData["message"]);
     }
@@ -141,6 +147,12 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return;
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
     }else{
       throw Exception(jsonData["message"]);
     }
@@ -171,6 +183,12 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return;
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
     }else{
       throw Exception(jsonData["message"]);
     }
@@ -182,6 +200,12 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return;
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
     }else{
       throw Exception(jsonData["message"]);
     }
