@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grader_io/Models/created_classrooms.dart';
+import 'package:grader_io/Models/joined_classrooms.dart';
 import 'package:grader_io/Models/user_info.dart';
 
 import '../Controllers/auth_state_controller.dart';
+import '../Controllers/created_classrooms_view_controller.dart';
+import '../Controllers/joined_classrooms_view_controller.dart';
 import '../Controllers/user_profile_view_controller.dart';
 import '../Services/secure_storage_service.dart';
 
@@ -24,7 +28,6 @@ class CreatedAndJoinedClassroomsScaffoldState
   Widget build(BuildContext context) {
     AsyncValue<UserInfo> userInfo =
         ref.watch(userProfileViewControllerProvider);
-
     return Scaffold(
       onDrawerChanged: (isOpened) {
         if (isOpened == true) {
@@ -94,12 +97,16 @@ class CreatedAndJoinedClassroomsScaffoldState
       floatingActionButton:
           GoRouter.of(context).location == "/created_classrooms"
               ? FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    GoRouter.of(context).go('/create_classroom');
+                  },
                   tooltip: "Create Classroom",
                   child: const Icon(Icons.add),
                 )
               : FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go('/join_classroom');
+                  },
                   tooltip: "Join Classroom",
                   child: const Icon(Icons.person_add),
                 ),
