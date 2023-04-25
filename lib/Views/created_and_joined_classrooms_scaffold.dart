@@ -98,7 +98,7 @@ class CreatedAndJoinedClassroomsScaffoldState
           GoRouter.of(context).location == "/created_classrooms"
               ? FloatingActionButton(
                   onPressed: () async {
-                    GoRouter.of(context).go('/create_classroom');
+                    GoRouter.of(context).push('/create_classroom');
                   },
                   tooltip: "Create Classroom",
                   child: const Icon(Icons.add),

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grader_io/Exceptions/token_expired.dart';
 import 'package:grader_io/Exceptions/token_not_found.dart';
 import 'package:grader_io/Models/assignment_detail.dart';
+import 'package:grader_io/Models/classroom.dart';
 import 'package:grader_io/Models/created_classrooms.dart';
 import 'package:grader_io/Models/submission_detail.dart';
 import 'package:grader_io/Models/summary_of_assigned_submissions_for_review.dart';
@@ -105,12 +106,12 @@ class Api{
     }
   }
 
-  Future<void> createClassroom(String name, String description) async {
+  Future<Classroom> createClassroom(String name, String description) async {
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.post(Uri.parse('$baseUrl/createclassroom'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"name":name,"description":description})).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
-      return;
+      return Classroom.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");

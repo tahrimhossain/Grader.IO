@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grader_io/Models/classroom.dart';
 
 import '../Exceptions/token_expired.dart';
 import '../Exceptions/token_not_found.dart';
@@ -7,7 +8,10 @@ import 'auth_state_controller.dart';
 
 class CreateClassroomState{}
 class ReadyToCreateClassroomState extends CreateClassroomState{}
-class SuccessfullyCreatedClassroomState extends CreateClassroomState{}
+class SuccessfullyCreatedClassroomState extends CreateClassroomState{
+  Classroom classroom;
+  SuccessfullyCreatedClassroomState({required this.classroom});
+}
 class FailedToCreateClassroomState extends CreateClassroomState{
   Exception error;
   FailedToCreateClassroomState({required this.error});
@@ -27,8 +31,8 @@ class CreateClassroomViewNotifier extends StateNotifier<AsyncValue<CreateClassro
   Future<void> createClassroom(String name, String description) async {
     state = const AsyncLoading();
     try {
-      await ref.read(apiProvider).createClassroom(name,description);
-      state = AsyncData(SuccessfullyCreatedClassroomState());
+      Classroom classroom = await ref.read(apiProvider).createClassroom(name,description);
+      state = AsyncData(SuccessfullyCreatedClassroomState(classroom: classroom));
     }on TokenNotFoundException catch(e){
       ref.read(authStateController.notifier).changeStatusToLoggedOut();
     }on TokenExpiredException catch(e){
