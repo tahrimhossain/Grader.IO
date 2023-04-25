@@ -30,6 +30,21 @@ class SummaryOfSubmissionsViewNotifier extends StateNotifier<AsyncValue<SummaryO
     }
   }
 
+  Future<void> publishScore(int assignmentId) async {
+    state = const AsyncLoading();
+    try {
+      await ref.read(apiProvider).publishScore(assignmentId);
+      SummaryOfSubmissions summaryOfSubmissions = await ref.read(apiProvider).getSummaryOfSubmissions(assignmentId);
+      state = AsyncData(summaryOfSubmissions);
+    }on TokenNotFoundException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    }on TokenExpiredException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    } catch (e, stacktrace) {
+      state = AsyncError(e, stacktrace);
+    }
+  }
+
   void setStateToLoading(){
     state = const AsyncLoading();
   }

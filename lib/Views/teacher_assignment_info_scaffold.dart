@@ -40,7 +40,11 @@ class TeacherAssignmentInfoScaffoldState
           ? summaryOfSubmissions.when(
               data: (summaryOfSubmissions) =>
                   summaryOfSubmissions.currentState == 'grades_assigned'
-                      ? FloatingActionButton(onPressed: () {},tooltip: "Publish Score",child: const Icon(Icons.publish),)
+                      ? FloatingActionButton(onPressed: () {
+                    ref
+                        .read(summaryOfSubmissionsViewControllerProvider.notifier)
+                        .publishScore(widget.assignmentId);
+                  },tooltip: "Publish Score",child: const Icon(Icons.publish),)
                       : null,
               error: (e, s) => null,
               loading: () => null)
