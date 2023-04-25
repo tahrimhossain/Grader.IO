@@ -30,4 +30,20 @@ class SubmissionGradeViewNotifier extends StateNotifier<AsyncValue<SubmissionGra
     }
   }
 
+  Future<void> updateFinalScore(int submissionId, int finalScore) async{
+    state = const AsyncLoading();
+    try {
+      await ref.read(apiProvider).updateFinalScore(submissionId, finalScore);
+      SubmissionGrade grade = await ref.read(apiProvider).getSubmissionGrade(submissionId);
+      state = AsyncData(grade);
+    }on TokenNotFoundException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    }on TokenExpiredException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    } catch (e, stacktrace) {
+      state = AsyncError(e, stacktrace);
+    }
+
+  }
+
 }
