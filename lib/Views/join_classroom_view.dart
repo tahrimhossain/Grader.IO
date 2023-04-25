@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grader_io/Models/classroom.dart';
 import 'package:grader_io/Views/joined_classrooms_view.dart';
 
 import '../Controllers/join_classroom_view_controller.dart';
@@ -39,7 +40,9 @@ class JoinClassroomViewState extends ConsumerState<JoinClassroomView> {
         ));
       }else if(next is AsyncData &&
           next.asData!.value is SuccessfullyJoinedClassroomState){
-        GoRouter.of(context).go("/joined_classrooms");
+        Classroom joinedClassroom =
+            (next.asData!.value as SuccessfullyJoinedClassroomState).classroom;
+        GoRouter.of(context).pushReplacement('/summary_of_assignments_in_joined_classroom/${joinedClassroom.name!}/${joinedClassroom.code!}');
       }
     });
 

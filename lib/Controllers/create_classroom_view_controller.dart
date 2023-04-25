@@ -31,8 +31,8 @@ class CreateClassroomViewNotifier extends StateNotifier<AsyncValue<CreateClassro
   Future<void> createClassroom(String name, String description) async {
     state = const AsyncLoading();
     try {
-      Classroom classroom = await ref.read(apiProvider).createClassroom(name,description);
-      state = AsyncData(SuccessfullyCreatedClassroomState(classroom: classroom));
+      Classroom createdClassroom = await ref.read(apiProvider).createClassroom(name,description);
+      state = AsyncData(SuccessfullyCreatedClassroomState(classroom: createdClassroom));
     }on TokenNotFoundException catch(e){
       ref.read(authStateController.notifier).changeStatusToLoggedOut();
     }on TokenExpiredException catch(e){

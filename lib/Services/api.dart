@@ -123,12 +123,12 @@ class Api{
     }
   }
 
-  Future<void> joinClassroom(String code) async {
+  Future<Classroom> joinClassroom(String code) async {
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.post(Uri.parse('$baseUrl/joinclassroom'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"classroom_code":code})).timeout(const Duration(seconds: 50));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
-      return;
+      return Classroom.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");

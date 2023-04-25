@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grader_io/Models/classroom.dart';
 
 import '../Exceptions/token_expired.dart';
 import '../Exceptions/token_not_found.dart';
@@ -7,7 +8,10 @@ import 'auth_state_controller.dart';
 
 class JoinClassroomState{}
 class ReadyToJoinClassroomState extends JoinClassroomState{}
-class SuccessfullyJoinedClassroomState extends JoinClassroomState{}
+class SuccessfullyJoinedClassroomState extends JoinClassroomState{
+  Classroom classroom;
+  SuccessfullyJoinedClassroomState({required this.classroom});
+}
 class FailedToJoinClassroomState extends JoinClassroomState{
   Exception error;
   FailedToJoinClassroomState({required this.error});
@@ -27,8 +31,8 @@ class JoinClassroomViewNotifier extends StateNotifier<AsyncValue<JoinClassroomSt
   Future<void> joinClassroom(String code) async {
     state = const AsyncLoading();
     try {
-      await ref.read(apiProvider).joinClassroom(code);
-      state = AsyncData(SuccessfullyJoinedClassroomState());
+      Classroom joinedClassroom = await ref.read(apiProvider).joinClassroom(code);
+      state = AsyncData(SuccessfullyJoinedClassroomState(classroom: joinedClassroom));
     }on TokenNotFoundException catch(e){
       ref.read(authStateController.notifier).changeStatusToLoggedOut();
     }on TokenExpiredException catch(e){

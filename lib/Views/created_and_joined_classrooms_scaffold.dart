@@ -105,7 +105,7 @@ class CreatedAndJoinedClassroomsScaffoldState
                 )
               : FloatingActionButton(
                   onPressed: () {
-                    GoRouter.of(context).go('/join_classroom');
+                    GoRouter.of(context).push('/join_classroom');
                   },
                   tooltip: "Join Classroom",
                   child: const Icon(Icons.person_add),
