@@ -22,7 +22,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
   final _formKeyMaxScore = GlobalKey<FormState>();
   final _formKeyReviewerNumber = GlobalKey<FormState>();
 
-  DateTime assigmnentStartsDateTime = DateTime(0);
+  DateTime assignmentStartsDateTime = DateTime(0);
   DateTime submissionDeadlineDateTime = DateTime(0);
   DateTime reviewDeadlineDateTime = DateTime(0);
 
@@ -338,8 +338,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                       height: 80,
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(15),
-                      child: Text("${assigmnentStartsDateTime.hour.toString().padLeft(2, '0')}:${assigmnentStartsDateTime.minute.toString().padLeft(2, '0')}:${assigmnentStartsDateTime.second.toString().padLeft(2, '0')}  "
-                                  "${assigmnentStartsDateTime.day}/${assigmnentStartsDateTime.month}/${assigmnentStartsDateTime.year}"),
+                      child: Text("${assignmentStartsDateTime.hour.toString().padLeft(2, '0')}:${assignmentStartsDateTime.minute.toString().padLeft(2, '0')}:${assignmentStartsDateTime.second.toString().padLeft(2, '0')}  "
+                                  "${assignmentStartsDateTime.day}/${assignmentStartsDateTime.month}/${assignmentStartsDateTime.year}"),
                     ),
                     Container(
                       height: 80,
@@ -350,7 +350,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                           final date = await  pickDateTime();
                           if(date == null) return;
                           setState(() {
-                            assigmnentStartsDateTime = date;
+                            assignmentStartsDateTime = date;
                           });
                         },
                       ),

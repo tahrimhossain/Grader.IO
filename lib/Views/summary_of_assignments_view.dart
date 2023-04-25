@@ -64,7 +64,9 @@ class SummaryOfAssignmentsViewState
                     "/summary_of_assignments_in_created_classroom") ==
                 true
             ? FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  GoRouter.of(context).push('/create_assignment/${widget.classroomCode}');
+                },
                 tooltip: "Create Assignment",
                 child: const Icon(Icons.add),
               )

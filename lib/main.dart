@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grader_io/Views/assignment_detail_view.dart';
+import 'package:grader_io/Views/create_assignment_view.dart';
 import 'package:grader_io/Views/create_classroom_view.dart';
 import 'package:grader_io/Views/created_classrooms_view.dart';
 import 'package:grader_io/Views/join_classroom_view.dart';
@@ -129,6 +130,15 @@ class MyApp extends ConsumerWidget {
                   classroomName: state.params['classroomName'] as String,
                   classroomCode: state.params['classroomCode'] as String,
                 ));
+              },
+            ),
+            GoRoute(
+              parentNavigatorKey: _rootNavigatorKey,
+              name: 'create_assignment',
+              path: '/create_assignment/:classroomCode',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return const NoTransitionPage(
+                    child: CreateAssignment());
               },
             ),
             GoRoute(
