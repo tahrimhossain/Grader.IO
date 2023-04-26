@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grader_io/Exceptions/token_expired.dart';
 import 'package:grader_io/Exceptions/token_not_found.dart';
 import 'package:grader_io/Models/assignment_detail.dart';
+import 'package:grader_io/Models/assignment_summary.dart';
 import 'package:grader_io/Models/classroom.dart';
 import 'package:grader_io/Models/created_classrooms.dart';
 import 'package:grader_io/Models/submission_detail.dart';
@@ -159,12 +160,12 @@ class Api{
     }
   }
 
-  Future<void> createAssignment(String code, String title,String description, String instructions, int maxScore, int numberOfReviewersPerSubmission, String submissionDeadline, String reviewDeadline) async {
+  Future<AssignmentSummary> createAssignment(String code, String title,String description, String instructions, int maxScore, int numberOfReviewersPerSubmission, String submissionDeadline, String reviewDeadline) async {
     String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
     http.Response response = await http.post(Uri.parse('$baseUrl/createassignment'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"code":code,"title":title,"description":description,"instructions":instructions,"max_score":maxScore,"number_of_reviewers_per_submission":numberOfReviewersPerSubmission,"submission_deadline":submissionDeadline,"review_deadline":reviewDeadline})).timeout(const Duration(seconds: 20));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
-      return;
+      return AssignmentSummary.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");

@@ -35,7 +35,6 @@ class MyApp extends ConsumerWidget {
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
@@ -69,17 +68,16 @@ class MyApp extends ConsumerWidget {
               },
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'created_classrooms',
               path: '/created_classrooms',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: CreatedAndJoinedClassroomsScaffold(child: CreatedClassroomsView()),
+                child: CreatedAndJoinedClassroomsScaffold(
+                    child: CreatedClassroomsView()),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'create_classroom',
               path: '/create_classroom',
               pageBuilder: (context, state) => const NoTransitionPage(
@@ -87,17 +85,16 @@ class MyApp extends ConsumerWidget {
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'joined_classrooms',
               path: '/joined_classrooms',
               pageBuilder: (context, state) => const NoTransitionPage(
-                child: CreatedAndJoinedClassroomsScaffold(child: JoinedClassroomsView()),
+                child: CreatedAndJoinedClassroomsScaffold(
+                    child: JoinedClassroomsView()),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'join_classroom',
               path: '/join_classroom',
               pageBuilder: (context, state) => const NoTransitionPage(
@@ -123,7 +120,8 @@ class MyApp extends ConsumerWidget {
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_assignments_in_created_classroom',
-              path: '/summary_of_assignments_in_created_classroom/:classroomName/:classroomCode',
+              path:
+                  '/summary_of_assignments_in_created_classroom/:classroomName/:classroomCode',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return NoTransitionPage(
                     child: SummaryOfAssignmentsView(
@@ -137,140 +135,151 @@ class MyApp extends ConsumerWidget {
               name: 'create_assignment',
               path: '/create_assignment/:classroomCode',
               pageBuilder: (BuildContext context, GoRouterState state) {
-                return const NoTransitionPage(
-                    child: CreateAssignment());
+                return NoTransitionPage(
+                    child: CreateAssignmentView(
+                        classroomCode:
+                            state.params['classroomCode'] as String));
               },
             ),
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_assignments_in_joined_classroom',
-              path: '/summary_of_assignments_in_joined_classroom/:classroomName/:classroomCode',
+              path:
+                  '/summary_of_assignments_in_joined_classroom/:classroomName/:classroomCode',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return NoTransitionPage(
                     child: SummaryOfAssignmentsView(
-                      classroomName: state.params['classroomName'] as String,
-                      classroomCode: state.params['classroomCode'] as String,
-                    ));
+                  classroomName: state.params['classroomName'] as String,
+                  classroomCode: state.params['classroomCode'] as String,
+                ));
               },
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
-              name: 'assignment_detail',
-              path: '/assignment_detail/:assignmentId',
-              pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherAssignmentInfoScaffold(assignmentId:int.parse(state.params["assignmentId"]!) ,child: AssignmentDetailView(
-                    assignmentId:
-                    int.parse(state.params["assignmentId"]!)),
-                ))
-            ),
+                parentNavigatorKey: _rootNavigatorKey,
+                name: 'assignment_detail',
+                path: '/assignment_detail/:assignmentId',
+                pageBuilder: (context, state) => NoTransitionPage(
+                        child: TeacherAssignmentInfoScaffold(
+                      assignmentId: int.parse(state.params["assignmentId"]!),
+                      child: AssignmentDetailView(
+                          assignmentId:
+                              int.parse(state.params["assignmentId"]!)),
+                    ))),
             GoRoute(
-                parentNavigatorKey:
-                _rootNavigatorKey,
+                parentNavigatorKey: _rootNavigatorKey,
                 name: 'assignment_info',
                 path: '/assignment_info/:assignmentId',
                 pageBuilder: (context, state) => NoTransitionPage(
-                    child: StudentAssignmentInfoScaffold(assignmentId:int.parse(state.params["assignmentId"]!),child: AssignmentDetailView(
-                        assignmentId:
-                        int.parse(state.params["assignmentId"]!)),
-                    ))
-            ),
+                        child: StudentAssignmentInfoScaffold(
+                      assignmentId: int.parse(state.params["assignmentId"]!),
+                      child: AssignmentDetailView(
+                          assignmentId:
+                              int.parse(state.params["assignmentId"]!)),
+                    ))),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_submissions',
               path: '/summary_of_submissions/:assignmentId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfSubmissionsView(
-                    assignmentId:
-                    int.parse(state.params["assignmentId"]!)),),
+                child: TeacherAssignmentInfoScaffold(
+                  assignmentId: int.parse(state.params["assignmentId"]!),
+                  child: SummaryOfSubmissionsView(
+                      assignmentId: int.parse(state.params["assignmentId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'submission_detail',
               path: '/submission_detail/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionDetailView(
-                    submissionId:
-                    int.parse(state.params["submissionId"]!)),),
+                child: TeacherSubmissionInfoScaffold(
+                  submissionId: int.parse(state.params["submissionId"]!),
+                  child: SubmissionDetailView(
+                      submissionId: int.parse(state.params["submissionId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'submission_grade',
               path: '/submission_grade/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionGradeView(
-                    submissionId:
-                    int.parse(state.params["submissionId"]!)),),
+                child: TeacherSubmissionInfoScaffold(
+                  submissionId: int.parse(state.params["submissionId"]!),
+                  child: SubmissionGradeView(
+                      submissionId: int.parse(state.params["submissionId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'assignment_grade',
               path: '/assignment_grade/:assignmentId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: AssignmentGradeView(
-                    assignmentId:
-                    int.parse(state.params["assignmentId"]!)),),
+                child: StudentAssignmentInfoScaffold(
+                  assignmentId: int.parse(state.params["assignmentId"]!),
+                  child: AssignmentGradeView(
+                      assignmentId: int.parse(state.params["assignmentId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_submission_reviews',
               path: '/summary_of_submission_reviews/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: TeacherSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SummaryOfSubmissionReviewsView(
-                    submissionId:
-                    int.parse(state.params["submissionId"]!)),),
+                child: TeacherSubmissionInfoScaffold(
+                  submissionId: int.parse(state.params["submissionId"]!),
+                  child: SummaryOfSubmissionReviewsView(
+                      submissionId: int.parse(state.params["submissionId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_assigned_reviews',
               path: '/summary_of_assigned_reviews/:assignmentId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfAssignedReviewsView(
-                    assignmentId:
-                    int.parse(state.params["assignmentId"]!)),),
+                child: StudentAssignmentInfoScaffold(
+                  assignmentId: int.parse(state.params["assignmentId"]!),
+                  child: SummaryOfAssignedReviewsView(
+                      assignmentId: int.parse(state.params["assignmentId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'submission_info',
               path: '/submission_info/:submissionId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: StudentSubmissionInfoScaffold(submissionId: int.parse(state.params["submissionId"]!),child: SubmissionDetailView(
-                    submissionId:
-                    int.parse(state.params["submissionId"]!)),),
+                child: StudentSubmissionInfoScaffold(
+                  submissionId: int.parse(state.params["submissionId"]!),
+                  child: SubmissionDetailView(
+                      submissionId: int.parse(state.params["submissionId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_received_reviews',
               path: '/summary_of_received_reviews/:assignmentId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: StudentAssignmentInfoScaffold(assignmentId: int.parse(state.params["assignmentId"]!),child: SummaryOfReceivedReviewsView(
-                    assignmentId:
-                    int.parse(state.params["assignmentId"]!)),),
+                child: StudentAssignmentInfoScaffold(
+                  assignmentId: int.parse(state.params["assignmentId"]!),
+                  child: SummaryOfReceivedReviewsView(
+                      assignmentId: int.parse(state.params["assignmentId"]!)),
+                ),
               ),
             ),
             GoRoute(
-              parentNavigatorKey:
-              _rootNavigatorKey,
+              parentNavigatorKey: _rootNavigatorKey,
               name: 'review_detail',
               path: '/review_detail/:reviewId',
               pageBuilder: (context, state) => NoTransitionPage(
-                child: ReviewDetailView(reviewId:int.parse(state.params["reviewId"]!) ,)
-              ),
+                  child: ReviewDetailView(
+                reviewId: int.parse(state.params["reviewId"]!),
+              )),
             ),
           ],
           redirect: (context, state) {
