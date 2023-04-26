@@ -5,6 +5,8 @@ import 'package:grader_io/Models/assignment_detail.dart';
 import 'package:grader_io/Models/assignment_summary.dart';
 import 'package:grader_io/Models/classroom.dart';
 import 'package:grader_io/Models/created_classrooms.dart';
+import 'package:grader_io/Models/created_review_detail.dart';
+import 'package:grader_io/Models/created_submission_detail.dart';
 import 'package:grader_io/Models/submission_detail.dart';
 import 'package:grader_io/Models/summary_of_assigned_submissions_for_review.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
@@ -379,6 +381,44 @@ class Api{
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return Grade.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<CreatedSubmissionDetail> getCreatedSubmission(int assignmentId) async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/createdsubmissiondetail/$assignmentId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return CreatedSubmissionDetail.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else if(jsonData["message"] == "Unauthorized action"){
+        throw Exception(jsonData["message"]);
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<CreatedReviewDetail> getCreatedReview(int submissionId) async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.get(Uri.parse('$baseUrl/createdreviewforsubmission/$submissionId'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken}).timeout(const Duration(seconds: 7));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return CreatedReviewDetail.fromJson(jsonData);
     }else if(response.statusCode == 401){
       if(jsonData["message"] == "Token expired"){
         throw TokenExpiredException(message: "session expired");
