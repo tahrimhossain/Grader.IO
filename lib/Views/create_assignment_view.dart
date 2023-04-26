@@ -313,53 +313,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
               ),
             ],
           ),
-          Row(
-            children: [
-              Container(
-                width: 0.2 * width, 
-                height: 80, 
-                padding: EdgeInsets.all(15),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Assignment Starts :",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                )
-              ),
-              Container(
-                width: 0.8 * width - 30,
-                height: 80,
-                margin: EdgeInsets.all(15),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 80,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.all(15),
-                      child: Text("${assignmentStartsDateTime.hour.toString().padLeft(2, '0')}:${assignmentStartsDateTime.minute.toString().padLeft(2, '0')}:${assignmentStartsDateTime.second.toString().padLeft(2, '0')}  "
-                                  "${assignmentStartsDateTime.day}/${assignmentStartsDateTime.month}/${assignmentStartsDateTime.year}"),
-                    ),
-                    Container(
-                      height: 80,
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: () async {
-                          final date = await  pickDateTime();
-                          if(date == null) return;
-                          setState(() {
-                            assignmentStartsDateTime = date;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          
           Row(
             children: [
               Container(
