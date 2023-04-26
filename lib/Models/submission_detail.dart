@@ -20,7 +20,7 @@ class SubmissionDetail {
 
   SubmissionDetail.fromJson(Map<String, dynamic> json) {
     submissionId = json['submission_id'];
-    submissionTime = DateTime.parse(json['submission_time']);
+    submissionTime = DateTime.parse(json['submission_time']).toLocal();
     content = json['content'];
     submissionState = json['submission_state'];
     email = json['email'];

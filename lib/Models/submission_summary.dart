@@ -22,7 +22,7 @@ class SubmissionSummary {
 
   SubmissionSummary.fromJson(Map<String, dynamic> json) {
     submissionId = json['submission_id'];
-    submissionTime = DateTime.parse(json['submission_time']);
+    submissionTime = DateTime.parse(json['submission_time']).toLocal();
     email = json['email'];
     name = json['name'];
     evaluationScore = json['evaluation_score'];

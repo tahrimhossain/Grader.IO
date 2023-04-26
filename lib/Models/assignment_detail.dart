@@ -28,8 +28,8 @@ class AssignmentDetail {
     maxScore = json['max_score'];
     numberOfReviewersPerSubmission = json['number_of_reviewers_per_submission'];
     currentState = json['current_state'];
-    submissionDeadline = DateTime.parse(json['submission_deadline']);
-    reviewDeadline = DateTime.parse(json['review_deadline']);
+    submissionDeadline = DateTime.parse(json['submission_deadline']).toLocal();
+    reviewDeadline = DateTime.parse(json['review_deadline']).toLocal();
   }
 
   

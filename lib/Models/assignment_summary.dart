@@ -17,8 +17,8 @@ class AssignmentSummary {
     assignmentId = json['assignment_id'];
     title = json['title'];
     currentState = json['current_state'];
-    submissionDeadline = DateTime.parse(json['submission_deadline']);
-    reviewDeadline = DateTime.parse(json['review_deadline']);
+    submissionDeadline = DateTime.parse(json['submission_deadline']).toLocal();
+    reviewDeadline = DateTime.parse(json['review_deadline']).toLocal();
 
   }
 
