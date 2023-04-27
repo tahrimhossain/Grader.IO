@@ -46,8 +46,8 @@ class StudentSubmissionInfoScaffoldState
               GoRouter.of(context)
                   .pushReplacement('/submission_info/${widget.submissionId}');
             } else if (index == 1) {
-              //GoRouter.of(context).pushReplacement(
-                  //'/created_review/${widget.submissionId}');
+              GoRouter.of(context).pushReplacement(
+                  '/created_review/${widget.submissionId}');
             }
           }),
     );

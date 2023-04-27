@@ -466,4 +466,21 @@ class Api{
     }
   }
 
+  Future<CreatedReviewDetail> submitReview(int submissionId, int assignedScore, String content)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/submitreview'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"submission_id":submissionId,"assigned_score":assignedScore,"content":content})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return CreatedReviewDetail.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
 }

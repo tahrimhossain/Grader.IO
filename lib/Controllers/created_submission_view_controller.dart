@@ -43,4 +43,18 @@ class CreatedSubmissionViewNotifier extends StateNotifier<AsyncValue<CreatedSubm
       state = AsyncError(e, stacktrace);
     }
   }
+
+  Future<void> submitSubmission(int assignmentId, String content) async {
+    state = const AsyncLoading();
+    try {
+      CreatedSubmissionDetail submittedSubmissionDetail = await ref.read(apiProvider).submitSubmission(assignmentId,content);
+      state = AsyncData(submittedSubmissionDetail);
+    }on TokenNotFoundException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    }on TokenExpiredException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    } catch (e, stacktrace) {
+      state = AsyncError(e, stacktrace);
+    }
+  }
 }

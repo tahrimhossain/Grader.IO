@@ -29,4 +29,18 @@ class CreatedReviewViewNotifier extends StateNotifier<AsyncValue<CreatedReviewDe
       state = AsyncError(e, stacktrace);
     }
   }
+
+  Future<void> submitReview(int submissionId, int assignedScore, String content) async {
+    state = const AsyncLoading();
+    try {
+      CreatedReviewDetail submittedReviewDetail = await ref.read(apiProvider).submitReview(submissionId,assignedScore,content);
+      state = AsyncData(submittedReviewDetail);
+    }on TokenNotFoundException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    }on TokenExpiredException catch(e){
+      ref.read(authStateController.notifier).changeStatusToLoggedOut();
+    } catch (e, stacktrace) {
+      state = AsyncError(e, stacktrace);
+    }
+  }
 }

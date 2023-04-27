@@ -5,29 +5,34 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../Controllers/created_submission_view_controller.dart';
-import '../Models/created_submission_detail.dart';
+import '../Controllers/created_review_view_controller.dart';
+import '../Models/created_review_detail.dart';
 
-class CreatedSubmissionView extends ConsumerStatefulWidget {
-  final int assignmentId;
+class CreatedReviewView extends ConsumerStatefulWidget {
+  final int submissionId;
 
-  const CreatedSubmissionView({Key? key, required this.assignmentId})
+  const CreatedReviewView({Key? key, required this.submissionId})
       : super(key: key);
 
   @override
-  CreatedSubmissionViewState createState() => CreatedSubmissionViewState();
+  CreatedReviewViewState createState() => CreatedReviewViewState();
 }
 
-class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
-  late AsyncValue<CreatedSubmissionDetail> submissionDetail;
+class CreatedReviewViewState extends ConsumerState<CreatedReviewView> {
+  late AsyncValue<CreatedReviewDetail> reviewDetail;
+
   String _markdownTextDescription = '';
 
   final _descController = TextEditingController();
-
   final _scrollController = ScrollController();
+  final _formKey = GlobalKey<FormState>();
+
+  int assignedScore = 0;
 
   bool submittedAnything = false;
   bool showEditor = false;
+
+  bool timeExpired = false;
 
   void wrapWith(
       {required String leftSide,
@@ -50,34 +55,35 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) => ref
-        .read(createdSubmissionViewControllerProvider.notifier)
-        .fetchCreatedSubmission(widget.assignmentId));
+        .read(createdReviewViewControllerProvider.notifier)
+        .fetchCreatedReview(widget.submissionId));
   }
 
   @override
   Widget build(BuildContext context) {
-    submissionDetail = ref.watch(createdSubmissionViewControllerProvider);
+    reviewDetail = ref.watch(createdReviewViewControllerProvider);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    double editorHeight = 550;
+    double editorHeight = 350;
 
-    return submissionDetail.when(
-      data: (submissionDetail) {
-        if (submissionDetail.submissionDetail == null) {
+    return reviewDetail.when(
+      data: (reviewDetail) {
+        if (reviewDetail.reviewDetail == null) {
           submittedAnything = false;
-          if(showEditor == false){
+          assignedScore = 0;
+          if (showEditor == false) {
             _descController.value = TextEditingValue(text: '');
             _markdownTextDescription = '';
           }
         } else {
           submittedAnything = true;
-          if(showEditor == false){
-            _markdownTextDescription =
-            submissionDetail.submissionDetail!.content!;
+          assignedScore = reviewDetail.reviewDetail!.score!;
+          if (showEditor == false) {
+            _markdownTextDescription = reviewDetail.reviewDetail!.content!;
           }
         }
         return SingleChildScrollView(
-          child: (!submittedAnything && showEditor == false)
+          child: (!submittedAnything) && showEditor == false
               ? Container(
                   width: width,
                   height: height,
@@ -90,14 +96,14 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                           Container(
                             height: 50,
                             child: Text(
-                              "You have not submitted anything",
+                              "You have not reviewd the submission.",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          submissionDetail.currentStateOfAssignment ==
-                                  'accepting_submissions'
+                          reviewDetail.currentStateOfAssignment ==
+                                  'accepting_reviews'
                               ? Container(
                                   height: 50,
                                   width: 140,
@@ -110,7 +116,7 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                                             Color.fromARGB(255, 224, 224, 224),
                                       ),
                                       child: Text(
-                                        "Edit",
+                                        "Review",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color:
@@ -133,16 +139,73 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                 )
               : Column(
                   children: [
-                    Container(
-                      width: width,
-                      height: 100,
-                    ),
+                    showEditor
+                        ? Container(
+                            width: width,
+                            height: 80,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Score : ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: 70,
+                                  alignment: Alignment.centerRight,
+                                  child: Form(
+                                    key: _formKey,
+                                    child: TextFormField(
+                                        minLines: 1,
+                                        maxLines: 1,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(width: 50),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blueGrey),
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          assignedScore = int.parse(value!);
+                                          return null;
+                                        }),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  width: 10,
+                                ),
+                                Text("/${reviewDetail.maxScore}"),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            width: width,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              "Score : $assignedScore/${reviewDetail.maxScore}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
                     Container(
                       width: width,
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.all(15),
                       child: Text(
-                        "Contents :",
+                        "Comment :",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -188,7 +251,6 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                                                   border: InputBorder.none),
                                               onChanged: (text) {
                                                 setState(() {
-
                                                   _markdownTextDescription =
                                                       text;
                                                 });
@@ -296,12 +358,29 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                                         backgroundColor: Colors.blueGrey,
                                       ),
                                       child: Text(
-                                        "Save",
+                                        "Submit",
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () {
-                                        showEditor = false;
-                                        ref.read(createdSubmissionViewControllerProvider.notifier).saveSubmission(widget.assignmentId, _markdownTextDescription);
+                                        if (_formKey.currentState!.validate() &&
+                                            assignedScore <=
+                                                reviewDetail.maxScore!) {
+                                          showEditor = false;
+                                          ref
+                                              .read(
+                                                  createdReviewViewControllerProvider
+                                                      .notifier)
+                                              .submitReview(
+                                                  widget.submissionId,
+                                                  assignedScore,
+                                                  _markdownTextDescription);
+                                        } else {
+                                          var snackBar = SnackBar(
+                                              content: Text(
+                                                  'Score should be less than or equal to max score.'));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                        }
                                       },
                                     ),
                                   ),
@@ -309,73 +388,43 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                               ),
                             ),
                           )
-                        : submissionDetail.currentStateOfAssignment ==
-                                'accepting_submissions'
-                            ? Container(
-                                width: width,
-                                height: 60,
-                                alignment: Alignment.centerRight,
-                                padding: EdgeInsets.all(15),
-                                child: Container(
-                                  width: 300,
+                        : Container(
+                            padding: EdgeInsets.only(right: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  width: 140,
                                   height: 60,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 140,
-                                        height: 60,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color.fromARGB(
-                                                255, 224, 224, 224),
-                                          ),
-                                          child: Text(
-                                            "Edit",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Color.fromARGB(
-                                                  255, 22, 22, 22),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              showEditor = true;
-                                              _descController.value =
-                                                  TextEditingValue(
-                                                      text: submissionDetail
-                                                          .submissionDetail!
-                                                          .content!);
-                                              _markdownTextDescription = submissionDetail.submissionDetail!.content!;
-                                            });
-                                          },
-                                        ),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 224, 224, 224),
+                                    ),
+                                    child: Text(
+                                      "Edit",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(255, 22, 22, 22),
                                       ),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      SizedBox(
-                                        width: 140,
-                                        height: 60,
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blueGrey,
-                                          ),
-                                          child: Text(
-                                            "Submit",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          onPressed: () {
-                                            showEditor = false;
-                                            ref.read(createdSubmissionViewControllerProvider.notifier).submitSubmission(widget.assignmentId, submissionDetail.submissionDetail!.content!);
-                                          },
-                                        ),
-                                      ),
-                                    ],
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        showEditor = true;
+                                        _descController.value =
+                                            TextEditingValue(
+                                                text: reviewDetail
+                                                    .reviewDetail!.content!);
+                                        _markdownTextDescription =
+                                            reviewDetail.reviewDetail!.content!;
+                                      });
+                                    },
                                   ),
-                                ),
-                              )
-                            : SizedBox(),
+                                )
+                              ],
+                            ),
+                          ),
                   ],
                 ),
         );

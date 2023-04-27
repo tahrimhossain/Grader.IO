@@ -10,6 +10,7 @@ import 'package:grader_io/Views/joined_classrooms_view.dart';
 import 'package:grader_io/Views/log_in_view.dart';
 import 'package:grader_io/Views/register_view.dart';
 import 'package:grader_io/Views/review_detail_view.dart';
+import 'package:grader_io/Views/created_review_view.dart';
 import 'package:grader_io/Views/student_assignment_info_scaffold.dart';
 import 'package:grader_io/Views/student_submission_info_scaffold.dart';
 import 'package:grader_io/Views/submission_detail_view.dart';
@@ -210,6 +211,17 @@ class MyApp extends ConsumerWidget {
                   assignmentId: int.parse(state.params["assignmentId"]!),
                   child: CreatedSubmissionView(
                       assignmentId: int.parse(state.params["assignmentId"]!)),
+                ),
+              ),
+            ),
+            GoRoute(
+              parentNavigatorKey: _rootNavigatorKey,
+              name: 'created_review',
+              path: '/created_review/:submissionId',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: StudentSubmissionInfoScaffold(
+                  submissionId: int.parse(state.params["submissionId"]!),
+                  child: CreatedReviewView(submissionId: int.parse(state.params["submissionId"]!),),
                 ),
               ),
             ),
