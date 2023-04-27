@@ -432,4 +432,38 @@ class Api{
     }
   }
 
+  Future<CreatedSubmissionDetail> saveSubmission(int assignmentId, String content)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/savesubmission'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"assignment_id":assignmentId,"content":content})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return CreatedSubmissionDetail.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
+  Future<CreatedSubmissionDetail> submitSubmission(int assignmentId, String content)async{
+    String accessToken = await ref.read(secureStorageServiceProvider).getAccessToken();
+    http.Response response = await http.post(Uri.parse('$baseUrl/submitsubmission'),headers: {"Content-type": "application/json","Accept": "application/json","Authorization":accessToken},body: jsonEncode({"assignment_id":assignmentId,"content":content})).timeout(const Duration(seconds: 20));
+    Map<String,dynamic> jsonData = json.decode(response.body);
+    if(response.statusCode == 200){
+      return CreatedSubmissionDetail.fromJson(jsonData);
+    }else if(response.statusCode == 401){
+      if(jsonData["message"] == "Token expired"){
+        throw TokenExpiredException(message: "session expired");
+      }else{
+        throw TokenNotFoundException(message: "token not found");
+      }
+    }else{
+      throw Exception(jsonData["message"]);
+    }
+  }
+
 }

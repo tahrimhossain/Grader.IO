@@ -61,6 +61,8 @@ class StudentAssignmentInfoScaffoldState
               GoRouter.of(context)
                   .pushReplacement('/assignment_info/${widget.assignmentId}');
             } else if (index == 1) {
+              GoRouter.of(context)
+                  .pushReplacement('/created_submission/${widget.assignmentId}');
             } else if (index == 2) {
               GoRouter.of(context)
                   .pushReplacement('/summary_of_assigned_reviews/${widget.assignmentId}');
