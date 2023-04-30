@@ -19,6 +19,9 @@ class CreatedSubmissionView extends ConsumerStatefulWidget {
 }
 
 class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
+
+
+
   late AsyncValue<CreatedSubmissionDetail> submissionDetail;
   String _markdownTextDescription = '';
 
@@ -137,6 +140,35 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                       width: width,
                       height: 100,
                     ),
+                    submittedAnything ?
+                    Container(
+                      width: width,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        "State :",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ) 
+                    :
+                    Container(),
+                    submittedAnything ?
+                    Container(
+                      width: width,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.fromLTRB(15, 0, 15, 15),
+                      child: Text(
+                        submissionDetail.submissionDetail!.submissionState!.toString().toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ) 
+                    :
+                    Container(),
                     Container(
                       width: width,
                       alignment: Alignment.centerLeft,
@@ -183,7 +215,7 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                                               controller: _descController,
                                               keyboardType:
                                                   TextInputType.multiline,
-                                              maxLines: 15,
+                                              maxLines: 25,
                                               decoration: InputDecoration(
                                                   border: InputBorder.none),
                                               onChanged: (text) {
@@ -302,6 +334,7 @@ class CreatedSubmissionViewState extends ConsumerState<CreatedSubmissionView> {
                                       onPressed: () {
                                         showEditor = false;
                                         ref.read(createdSubmissionViewControllerProvider.notifier).saveSubmission(widget.assignmentId, _markdownTextDescription);
+                                        
                                       },
                                     ),
                                   ),

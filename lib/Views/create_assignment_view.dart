@@ -31,8 +31,8 @@ class CreateAssignmentViewState extends ConsumerState<CreateAssignmentView> {
   final _formKeyReviewerNumber = GlobalKey<FormState>();
 
   DateTime assignmentStartsDateTime = DateTime(0);
-  DateTime submissionDeadlineDateTime = DateTime(0);
-  DateTime reviewDeadlineDateTime = DateTime(0);
+  DateTime submissionDeadlineDateTime = DateTime.now();
+  DateTime reviewDeadlineDateTime = DateTime.now();
 
   String titleText = '';
   int maxScore = 0;
@@ -507,20 +507,30 @@ class CreateAssignmentViewState extends ConsumerState<CreateAssignmentView> {
                           if (_formKeyTitle.currentState!.validate() &&
                               _formKeyMaxScore.currentState!.validate() &&
                               _formKeyReviewerNumber.currentState!.validate()) {
-                            ref
-                                .read(createAssignmentViewControllerProvider
-                                    .notifier)
-                                .createAssignment(
-                                    widget.classroomCode,
-                                    titleText,
-                                    _markdownTextDescription,
-                                    _markdownTextInstruction,
-                                    maxScore,
-                                    numberOfReviewers,
-                                    submissionDeadlineDateTime
-                                        .toUtc()
-                                        .toString(),
-                                    reviewDeadlineDateTime.toUtc().toString());
+
+                                if(!reviewDeadlineDateTime.isAfter(submissionDeadlineDateTime)) {
+                                  var snackBar = SnackBar(
+                                              content: Text(
+                                                  'Review deadline should be after submission deadline.'));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar);
+                                } else {
+
+                              ref
+                                  .read(createAssignmentViewControllerProvider
+                                      .notifier)
+                                  .createAssignment(
+                                      widget.classroomCode,
+                                      titleText,
+                                      _markdownTextDescription,
+                                      _markdownTextInstruction,
+                                      maxScore,
+                                      numberOfReviewers,
+                                      submissionDeadlineDateTime
+                                          .toUtc()
+                                          .toString(),
+                                      reviewDeadlineDateTime.toUtc().toString());
+                                }
                           }
                         },
                       ),

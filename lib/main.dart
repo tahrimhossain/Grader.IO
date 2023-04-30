@@ -42,9 +42,9 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
         backgroundColor: Colors.white,
-        primaryColor: Colors.blue,
+        primaryColor: Colors.blueGrey,
         fontFamily: 'Montserrat',
         textTheme: const TextTheme(
           headlineMedium:

@@ -36,7 +36,7 @@ class Api{
   Api({required this.ref});
 
   Future<String> register(String email, String name, String password) async {
-    http.Response response = await http.post(Uri.parse('$baseUrl/register'),headers: {"Access-Control-Allow-Origin": "*","Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"name":name,"password":password})).timeout(const Duration(seconds: 20));
+    http.Response response = await http.post(Uri.parse('$baseUrl/register'),headers: {"Access-Control-Allow-Origin": "*","Content-type": "application/json","Accept": "application/json"},body: jsonEncode({"email":email,"name":name,"password":password})).timeout(const Duration(seconds: 120));
     Map<String,dynamic> jsonData = json.decode(response.body);
     if(response.statusCode == 200){
       return jsonData["access_token"];
