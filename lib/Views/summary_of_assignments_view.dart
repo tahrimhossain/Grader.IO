@@ -34,17 +34,17 @@ class SummaryOfAssignmentsViewState
         .fetchAssignments(widget.classroomCode));
   }
 
-  var assignmentStates = {'accepting_submissions' : 'Accepting Submissions', 
-                          'accepting_reviews' : 'Accepting Reviews', 
-                          'grades_assigned' : 'Grades Assigned',
-                          'grades_finalised' : 'Grades Finalised'};
+  var assignmentStates = {
+    'accepting_submissions': 'Accepting Submissions',
+    'accepting_reviews': 'Accepting Reviews',
+    'grades_assigned': 'Grades Assigned',
+    'grades_finalised': 'Grades Finalised'
+  };
 
   @override
   Widget build(BuildContext context) {
-
-    double width = MediaQuery. of(context). size. width;
-    double height = MediaQuery. of(context). size. height;
-
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     summaryOfAssignments =
         ref.watch(summaryOfAssignmentsViewControllerProvider);
@@ -65,194 +65,219 @@ class SummaryOfAssignmentsViewState
                 true
             ? FloatingActionButton(
                 onPressed: () {
-                  GoRouter.of(context).push('/create_assignment/${widget.classroomCode}');
+                  GoRouter.of(context)
+                      .push('/create_assignment/${widget.classroomCode}');
                 },
                 tooltip: "Create Assignment",
                 child: const Icon(Icons.add),
               )
             : null,
-        body: SingleChildScrollView(
-        child: Container(
-          height: height,
-          width: width,
-          child: GridView.count(
-            primary: false,
-            padding: const EdgeInsets.all(20),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: width ~/ 350,
-            childAspectRatio: 1.2,
-            children: <Widget>[
-              for (var item in summaryOfAssignments.assignments!)
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: InkWell(
-                    child: Card(
-                      color: Colors.blueGrey,
-                      elevation: 10.0,
-                      shadowColor: Colors.black,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min, // add this
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 3, 
-                            child: Container(
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                item.title!,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
+        body: summaryOfAssignments.assignments!.isEmpty
+            ? Center(
+                child: Text('No assignments created'),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                    height: height,
+                    width: width,
+                    child: GridView.count(
+                      primary: false,
+                      padding: const EdgeInsets.all(20),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: width ~/ 350,
+                      childAspectRatio: 1.2,
+                      children: <Widget>[
+                        for (var item in summaryOfAssignments.assignments!)
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            child: InkWell(
+                              child: Card(
+                                color: Colors.blueGrey,
+                                elevation: 10.0,
+                                shadowColor: Colors.black,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min, // add this
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                        flex: 3,
+                                        child: Container(
+                                          padding: EdgeInsets.all(15),
+                                          child: Text(
+                                            item.title!,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.all(3),
+                                          color: Colors.white,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      child: Text(
+                                                        "State: ",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Text(
+                                                        assignmentStates[item
+                                                            .currentState!]!,
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.all(3),
+                                          color: Colors.white,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      child: Text(
+                                                        "Submission Deadline: ",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Text(
+                                                        DateFormat(
+                                                                'HH:mm dd-MM-yyyy')
+                                                            .format(item
+                                                                .submissionDeadline!),
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding: EdgeInsets.all(3),
+                                          color: Colors.white,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      child: Text(
+                                                        "Review Deadline: ",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3),
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Text(
+                                                        DateFormat(
+                                                                'HH:mm dd-MM-yyyy')
+                                                            .format(item
+                                                                .reviewDeadline!),
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color:
+                                                                Colors.black),
+                                                      ))),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  ],
                                 ),
                               ),
-                            )
+                              onTap: () {
+                                if (GoRouter.of(context).location.startsWith(
+                                        "/summary_of_assignments_in_created_classroom") ==
+                                    true) {
+                                  GoRouter.of(context).push(
+                                      '/assignment_detail/${item.assignmentId}');
+                                } else {
+                                  GoRouter.of(context).push(
+                                      '/assignment_info/${item.assignmentId}');
+                                }
+                              },
+                            ),
                           ),
-                          Expanded(
-                            flex: 1, 
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              color: Colors.white,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 10,),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      child: Text(
-                                        "State: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        assignmentStates[item.currentState!]!,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  SizedBox(width: 10,),
-                                ],
-                              ),
-                            )
-                          ),
-                          Expanded(
-                            flex: 1, 
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              color: Colors.white,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 10,),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      child: Text(
-                                        "Submission Deadline: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        DateFormat('HH:mm dd-MM-yyyy').format(item.submissionDeadline!),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  SizedBox(width: 10,),
-                                ],
-                              ),
-                            )
-                          ),
-                          Expanded(
-                            flex: 1, 
-                            child: Container(
-                              padding: EdgeInsets.all(3),
-                              color: Colors.white,
-                              child: Row(
-                                children: [
-                                  SizedBox(width: 10,),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      child: Text(
-                                        "Review Deadline: ",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  Expanded(
-                                    flex: 1,                              
-                                    child: Container(
-                                      padding: const EdgeInsets.all(3),
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        DateFormat('HH:mm dd-MM-yyyy').format(item.reviewDeadline!),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black
-                                        ),
-                                      )
-                                    )
-                                  ),
-                                  SizedBox(width: 10,),
-                                ],
-                              ),
-                            )
-                          ),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      if (GoRouter.of(context).location.startsWith(
-                              "/summary_of_assignments_in_created_classroom") ==
-                          true) {
-                        GoRouter.of(context).push(
-                            '/assignment_detail/${item.assignmentId}');
-                      } else {
-                        GoRouter.of(context).push(
-                            '/assignment_info/${item.assignmentId}');
-                      }
-                    },
-                  ),
-                ),
-              ],
-            )
-          ),
-        ),
+                      ],
+                    )),
+              ),
       ),
       error: (e, s) => Scaffold(
         appBar: AppBar(
@@ -282,5 +307,4 @@ class SummaryOfAssignmentsViewState
       ),
     );
   }
-
 }

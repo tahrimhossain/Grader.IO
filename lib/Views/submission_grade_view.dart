@@ -436,7 +436,7 @@ class SubmissionGradeViewState extends ConsumerState<SubmissionGradeView> {
         );
       },
       error: (e, s) => Center(
-        child: Text(e.toString()),
+        child: Text(e.toString().substring(11)),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
     );

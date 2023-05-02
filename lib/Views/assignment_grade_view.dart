@@ -274,7 +274,7 @@ class AssignmentGradeViewState extends ConsumerState<AssignmentGradeView> {
         ),
       ),
       error: (e, s) => Center(
-        child: Text(e.toString()),
+        child: Text(e.toString().substring(11)),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
