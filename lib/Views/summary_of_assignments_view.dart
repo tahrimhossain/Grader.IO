@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grader_io/Controllers/created_classrooms_view_controller.dart';
 import 'package:grader_io/Controllers/summary_of_assignments_view_controller.dart';
 import 'package:grader_io/Models/summary_of_assignments.dart';
 import 'package:intl/intl.dart';
 
+import '../Controllers/joined_classrooms_view_controller.dart';
 import '../Models/classroom.dart';
 
 class SummaryOfAssignmentsView extends ConsumerStatefulWidget {
@@ -59,6 +61,19 @@ class SummaryOfAssignmentsViewState
                   fontSize: 16)),
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
+          leading: GoRouter.of(context).canPop()?IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              if(GoRouter.of(context).location.startsWith("/summary_of_assignments_in_created_classroom")){
+                ref.read(createdClassroomsViewControllerProvider.notifier).fetchCreatedClassrooms();
+              }else{
+                ref.read(joinedClassroomsViewControllerProvider.notifier).fetchJoinedClassrooms();
+              }
+
+              GoRouter.of(context).pop();
+
+            },
+          ):null,
         ),
         floatingActionButton: GoRouter.of(context).location.startsWith(
                     "/summary_of_assignments_in_created_classroom") ==

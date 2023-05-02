@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grader_io/Controllers/summary_of_assignments_view_controller.dart';
 import '../Controllers/summary_of_submissions_view_controller.dart';
 import '../Models/summary_of_submissions.dart';
 
@@ -40,11 +41,16 @@ class TeacherAssignmentInfoScaffoldState
           ? summaryOfSubmissions.when(
               data: (summaryOfSubmissions) =>
                   summaryOfSubmissions.currentState == 'grades_assigned'
-                      ? FloatingActionButton(onPressed: () {
-                    ref
-                        .read(summaryOfSubmissionsViewControllerProvider.notifier)
-                        .publishScore(widget.assignmentId);
-                  },tooltip: "Publish Score",child: const Icon(Icons.publish),)
+                      ? FloatingActionButton(
+                          onPressed: () {
+                            ref
+                                .read(summaryOfSubmissionsViewControllerProvider
+                                    .notifier)
+                                .publishScore(widget.assignmentId);
+                          },
+                          tooltip: "Publish Score",
+                          child: const Icon(Icons.publish),
+                        )
                       : null,
               error: (e, s) => null,
               loading: () => null)
