@@ -50,7 +50,7 @@ class LogInViewState extends ConsumerState<LogInView> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 34,
-                          color: Colors.blue)
+                          color: Colors.blueGrey)
                   ),
                 ),
                 SizedBox(
@@ -110,11 +110,9 @@ class LogInViewState extends ConsumerState<LogInView> {
                   child: Container(
                     height: (50/812)*MediaQuery.of(context).size.height,
                     decoration: BoxDecoration(
+                        color: Colors.blueGrey,
                         borderRadius: BorderRadius.circular(25.0),
-                        gradient: const LinearGradient(colors: [
-                          Color(0xff43CBFF),
-                          Color(0xff9708CC),
-                        ])),
+                        ),
                     child: const Center(
                       child: Text(
                         "Log In",
@@ -141,7 +139,7 @@ class LogInViewState extends ConsumerState<LogInView> {
                     GestureDetector(
                       child: const Text(
                         "Register now.",
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Colors.blueGrey),
                       ),
                       onTap: () {
                         GoRouter.of(context).go('/register');
