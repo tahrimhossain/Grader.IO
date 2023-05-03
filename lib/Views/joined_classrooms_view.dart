@@ -37,7 +37,7 @@ class JoinedClassroomsViewState extends ConsumerState<JoinedClassroomsView> {
     double height = MediaQuery. of(context). size. height;
 
     return joinedClassrooms.when(
-      data: (joinedClassrooms) => joinedClassrooms.classrooms!.isEmpty?Center(child: Text('No classroom created'),):SingleChildScrollView(
+      data: (joinedClassrooms) => joinedClassrooms.classrooms!.isEmpty?Center(child: Text('No classroom joined'),):SingleChildScrollView(
         child: Container(
           height: height,
           width: width,
