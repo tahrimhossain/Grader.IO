@@ -389,8 +389,7 @@ class CreatedReviewViewState extends ConsumerState<CreatedReviewView> {
                             ),
                           )
                         : reviewDetail.currentStateOfAssignment ==
-                                'accepting_reviews'
-                            ? Container(
+                                'accepting_reviews' ? Container(
                                 padding: EdgeInsets.only(right: 20),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
