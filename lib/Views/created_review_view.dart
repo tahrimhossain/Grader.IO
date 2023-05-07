@@ -389,43 +389,48 @@ class CreatedReviewViewState extends ConsumerState<CreatedReviewView> {
                               ),
                             ),
                           )
-                        : Container(
-                            padding: EdgeInsets.only(right: 20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SizedBox(
-                                  width: 140,
-                                  height: 60,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 224, 224, 224),
-                                    ),
-                                    child: Text(
-                                      "Edit",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 22, 22, 22),
+                        : reviewDetail.currentStateOfAssignment ==
+                                'accepting_reviews' ? Container(
+                                padding: EdgeInsets.only(right: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      width: 140,
+                                      height: 60,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromARGB(
+                                              255, 224, 224, 224),
+                                        ),
+                                        child: Text(
+                                          "Edit",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Color.fromARGB(255, 22, 22, 22),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            showEditor = true;
+                                            _descController.value =
+                                                TextEditingValue(
+                                                    text: reviewDetail
+                                                        .reviewDetail!
+                                                        .content!);
+                                            _markdownTextDescription =
+                                                reviewDetail
+                                                    .reviewDetail!.content!;
+                                          });
+                                        },
                                       ),
-                                    ),
-                                    onPressed: () {
-                                      setState(() {
-                                        showEditor = true;
-                                        _descController.value =
-                                            TextEditingValue(
-                                                text: reviewDetail
-                                                    .reviewDetail!.content!);
-                                        _markdownTextDescription =
-                                            reviewDetail.reviewDetail!.content!;
-                                      });
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
                   ],
                 ),
         );
