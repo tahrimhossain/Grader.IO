@@ -122,7 +122,7 @@ class ReviewDetailViewState
                         padding: EdgeInsets.all(15),
                         alignment: Alignment.topLeft,
                         child: Text(
-                          "Contents :",
+                          "Comment :",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,

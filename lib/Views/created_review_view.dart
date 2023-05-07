@@ -139,6 +139,7 @@ class CreatedReviewViewState extends ConsumerState<CreatedReviewView> {
                 )
               : Column(
                   children: [
+                    SizedBox(width: width, height: 50,),
                     showEditor
                         ? Container(
                             width: width,
