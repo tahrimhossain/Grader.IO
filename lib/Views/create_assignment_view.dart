@@ -78,7 +78,7 @@ class CreateAssignmentViewState extends ConsumerState<CreateAssignmentView> {
             (next.asData!.value as SuccessfullyCreatedAssignmentState)
                 .assignmentSummary;
         GoRouter.of(context)
-            .pushReplacement('/assignment_detail/${createdAssignment.assignmentId}');
+            .pushReplacement('/assignment_detail/${widget.classroomCode}/${createdAssignment.assignmentId}');
       }
     });
     return createAssignmentState.when(
