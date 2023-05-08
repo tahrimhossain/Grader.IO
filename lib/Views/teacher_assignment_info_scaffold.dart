@@ -6,11 +6,12 @@ import '../Controllers/summary_of_submissions_view_controller.dart';
 import '../Models/summary_of_submissions.dart';
 
 class TeacherAssignmentInfoScaffold extends ConsumerStatefulWidget {
+  final String classroomCode;
   final int assignmentId;
   final Widget child;
 
   const TeacherAssignmentInfoScaffold(
-      {Key? key, required this.assignmentId, required this.child})
+      {Key? key, required this.assignmentId, required this.child,required this.classroomCode})
       : super(key: key);
 
   @override
@@ -35,6 +36,13 @@ class TeacherAssignmentInfoScaffoldState
                 fontSize: 16)),
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
+        leading: GoRouter.of(context).canPop()?IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref.read(summaryOfAssignmentsViewControllerProvider.notifier).fetchAssignments(widget.classroomCode);
+            GoRouter.of(context).pop();
+          },
+        ):null,
       ),
       floatingActionButton: GoRouter.of(context).location ==
               "/summary_of_submissions/${widget.assignmentId}"
@@ -73,10 +81,10 @@ class TeacherAssignmentInfoScaffoldState
                   .read(summaryOfSubmissionsViewControllerProvider.notifier)
                   .setStateToLoading();
               GoRouter.of(context)
-                  .pushReplacement('/assignment_detail/${widget.assignmentId}');
+                  .pushReplacement('/assignment_detail/${widget.classroomCode}/${widget.assignmentId}');
             } else if (index == 1) {
               GoRouter.of(context).pushReplacement(
-                  '/summary_of_submissions/${widget.assignmentId}');
+                  '/summary_of_submissions/${widget.classroomCode}/${widget.assignmentId}');
             }
           }),
     );

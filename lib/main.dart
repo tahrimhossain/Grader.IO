@@ -40,7 +40,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      title: 'Flutter Demo',
+      title: 'Grader.IO',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         backgroundColor: Colors.white,
@@ -159,10 +159,11 @@ class MyApp extends ConsumerWidget {
             GoRoute(
                 parentNavigatorKey: _rootNavigatorKey,
                 name: 'assignment_detail',
-                path: '/assignment_detail/:assignmentId',
+                path: '/assignment_detail/:classroomCode/:assignmentId',
                 pageBuilder: (context, state) => NoTransitionPage(
                         child: TeacherAssignmentInfoScaffold(
                       assignmentId: int.parse(state.params["assignmentId"]!),
+                      classroomCode: state.params["classroomCode"]!,
                       child: AssignmentDetailView(
                           assignmentId:
                               int.parse(state.params["assignmentId"]!)),
@@ -181,10 +182,11 @@ class MyApp extends ConsumerWidget {
             GoRoute(
               parentNavigatorKey: _rootNavigatorKey,
               name: 'summary_of_submissions',
-              path: '/summary_of_submissions/:assignmentId',
+              path: '/summary_of_submissions/:classroomCode/:assignmentId',
               pageBuilder: (context, state) => NoTransitionPage(
                 child: TeacherAssignmentInfoScaffold(
                   assignmentId: int.parse(state.params["assignmentId"]!),
+                  classroomCode: state.params["classroomCode"]!,
                   child: SummaryOfSubmissionsView(
                       assignmentId: int.parse(state.params["assignmentId"]!)),
                 ),

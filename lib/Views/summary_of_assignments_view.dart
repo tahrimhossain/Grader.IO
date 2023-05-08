@@ -282,7 +282,7 @@ class SummaryOfAssignmentsViewState
                                         "/summary_of_assignments_in_created_classroom") ==
                                     true) {
                                   GoRouter.of(context).push(
-                                      '/assignment_detail/${item.assignmentId}');
+                                      '/assignment_detail/${widget.classroomCode}/${item.assignmentId}');
                                 } else {
                                   GoRouter.of(context).push(
                                       '/assignment_info/${item.assignmentId}');
