@@ -46,7 +46,7 @@ class TeacherAssignmentInfoScaffoldState
         ):null,
       ),
       floatingActionButton: GoRouter.of(context).location ==
-              "/summary_of_submissions/${widget.assignmentId}"
+              "/summary_of_submissions/${widget.classroomCode}/${widget.assignmentId}"
           ? summaryOfSubmissions.when(
               data: (summaryOfSubmissions) =>
                   summaryOfSubmissions.currentState == 'grades_assigned'
