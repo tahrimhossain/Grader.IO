@@ -23,11 +23,12 @@ class StudentSubmissionInfoScaffoldState
       appBar: AppBar(
         title: const Text("Grader.IO",
             style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+                fontSize: 18)),
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.white),
+        toolbarHeight: 80,
       ),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,11 +39,13 @@ class CreatedAndJoinedClassroomsScaffoldState
       appBar: AppBar(
         title: const Text("Grader.IO",
             style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+                fontSize: 18)
+              ),
+        backgroundColor: Colors.blueGrey,
+        iconTheme: const IconThemeData(color: Colors.white),
+        toolbarHeight: 80,
       ),
       drawer: Drawer(
         child: ListView(
@@ -55,7 +59,7 @@ class CreatedAndJoinedClassroomsScaffoldState
                   child: Icon(Icons.person),
                 ),
                 decoration: const BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.blueGrey,
                 ),
               ),
               error: (e, stacktrace) => const UserAccountsDrawerHeader(
@@ -65,7 +69,7 @@ class CreatedAndJoinedClassroomsScaffoldState
                   child: Icon(Icons.person),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.blueGrey,
                 ),
               ),
               loading: () => const UserAccountsDrawerHeader(
@@ -75,7 +79,7 @@ class CreatedAndJoinedClassroomsScaffoldState
                   child: Icon(Icons.person),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.blueGrey,
                 ),
               ),
             ),
@@ -110,22 +114,32 @@ class CreatedAndJoinedClassroomsScaffoldState
                   tooltip: "Join Classroom",
                   child: const Icon(Icons.person_add),
                 ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex:
-              GoRouter.of(context).location == "/created_classrooms" ? 0 : 1,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.list_alt), label: "Created"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.pending_actions), label: "Joined"),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 1.5,
+            ),
           ],
-          onTap: (index) {
-            if (index == 0) {
-              GoRouter.of(context).go('/created_classrooms');
-            } else if (index == 1) {
-              GoRouter.of(context).go('/joined_classrooms');
-            }
-          }),
+        ),
+        child: BottomNavigationBar(        
+            currentIndex:
+                GoRouter.of(context).location == "/created_classrooms" ? 0 : 1,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list_alt), label: "Created"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.pending_actions), label: "Joined"),
+            ],
+            onTap: (index) {
+              if (index == 0) {
+                GoRouter.of(context).go('/created_classrooms');
+              } else if (index == 1) {
+                GoRouter.of(context).go('/joined_classrooms');
+              }
+            }),
+      ),
     );
   }
 }

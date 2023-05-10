@@ -31,11 +31,12 @@ class TeacherAssignmentInfoScaffoldState
       appBar: AppBar(
         title: const Text("Grader.IO",
             style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16)),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+                fontSize: 18)),
+        backgroundColor: Colors.blueGrey,
+        iconTheme: const IconThemeData(color: Colors.white),
+        toolbarHeight: 80,
         leading: GoRouter.of(context).canPop()?IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

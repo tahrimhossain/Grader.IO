@@ -56,11 +56,12 @@ class SummaryOfAssignmentsViewState
         appBar: AppBar(
           title: Text(widget.classroomName,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16)),
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+          backgroundColor: Colors.blueGrey,
+          iconTheme: const IconThemeData(color: Colors.white),
+          toolbarHeight: 80,
           leading: GoRouter.of(context).canPop()?IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -298,11 +299,12 @@ class SummaryOfAssignmentsViewState
         appBar: AppBar(
           title: Text(widget.classroomName,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16)),
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+          backgroundColor: Colors.blueGrey,
+          iconTheme: const IconThemeData(color: Colors.white),
+          toolbarHeight: 80,
         ),
         body: Center(
           child: Text(e.toString()),
@@ -312,11 +314,12 @@ class SummaryOfAssignmentsViewState
         appBar: AppBar(
           title: Text(widget.classroomName,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16)),
-          backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+          backgroundColor: Colors.blueGrey,
+          iconTheme: const IconThemeData(color: Colors.white),
+          toolbarHeight: 80,
         ),
         body: const Center(child: CircularProgressIndicator()),
       ),
