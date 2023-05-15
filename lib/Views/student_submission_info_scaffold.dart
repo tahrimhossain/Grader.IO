@@ -26,7 +26,7 @@ class StudentSubmissionInfoScaffoldState
                 color: Colors.white,
                 // fontWeight: FontWeight.bold,
                 fontSize: 18)),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blueGrey,
         iconTheme: const IconThemeData(color: Colors.white),
         toolbarHeight: 80,
       ),
